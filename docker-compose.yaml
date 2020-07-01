@@ -11,7 +11,7 @@ services:
     ports:
       - ${PORTAINER_PORT}:${PORTAINER_PORT}
     networks:
-      docker_server:
+      default:
         ipv4_address: ${PORTAINER_NETWORK_IP}
   php7_container:
     container_name: Php_${PHP7_VERSION}-fpm
@@ -24,6 +24,7 @@ services:
         WWW_USER_NAME: ${WWW_USER_NAME}
         WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
+        WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         PHP7_VERSION: ${PHP7_VERSION}
@@ -37,6 +38,7 @@ services:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
+      WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       PHP7_VERSION: ${PHP7_VERSION}
@@ -50,7 +52,7 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
     networks:
-      docker_server:
+      default:
         ipv4_address: ${PHP7_NETWORK_IP}
   apache_container:
     container_name: Apache_${APACHE_VERSION}
@@ -61,6 +63,7 @@ services:
         WWW_USER_NAME: ${WWW_USER_NAME}
         WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
+        WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         CERTIFICATE_FILE: ${CERTIFICATE_FILE}
@@ -77,6 +80,7 @@ services:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
+      WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       CERTIFICATE_FILE: ${CERTIFICATE_FILE}
@@ -98,7 +102,7 @@ services:
     depends_on:
       - php7_container
     networks:
-      docker_server:
+      default:
         ipv4_address: ${APACHE_NETWORK_IP}
   mysql_container:
     container_name: MySql_${MYSQL_VERSION}
@@ -109,6 +113,7 @@ services:
         WWW_USER_NAME: ${WWW_USER_NAME}
         WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
+        WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         MYSQL_VERSION: ${MYSQL_VERSION}
@@ -120,6 +125,7 @@ services:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
+      WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       MYSQL_VERSION: ${MYSQL_VERSION}
@@ -135,7 +141,7 @@ services:
     depends_on:
       - apache_container
     networks:
-      docker_server:
+      default:
         ipv4_address: ${MYSQL_NETWORK_IP}
   postgresql_container:
     container_name: PostgreSql_${POSTGRES_VERSION}
@@ -146,6 +152,7 @@ services:
         WWW_USER_NAME: ${WWW_USER_NAME}
         WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
+        WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         POSTGRES_VERSION: ${POSTGRES_VERSION}
@@ -156,6 +163,7 @@ services:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
+      WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       POSTGRES_VERSION: ${POSTGRES_VERSION}
@@ -170,7 +178,7 @@ services:
     depends_on:
       - apache_container
     networks:
-      docker_server:
+      default:
         ipv4_address: ${POSTGRES_NETWORK_IP}
   nodejs_container:
     container_name: NodeJs_${NODEJS_VERSION}
@@ -179,6 +187,7 @@ services:
       dockerfile: Dockerfile_nodejs
       args:
         WWW_USER_NAME: ${WWW_USER_NAME}
+        WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         CERTIFICATE_FILE: ${CERTIFICATE_FILE}
@@ -192,6 +201,7 @@ services:
         NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
+      WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       CERTIFICATE_FILE: ${CERTIFICATE_FILE}
@@ -209,10 +219,10 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
     networks:
-      docker_server:
+      default:
         ipv4_address: ${NODEJS_NETWORK_IP}
 networks:
-  docker_server:
+  default:
     driver: ${NETWORK_DRIVER}
     ipam:
       driver: default

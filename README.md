@@ -28,11 +28,16 @@ Web server with docker container.
 
 3) Modify file with your configuration, save and close the file.
 
-4) Add shared folder in your docker and write on terminal:
-    
+4) Add your path in the shared folder docker dashboard and write on terminal:
+
     docker-compose up -d --build
 
-5) Write on your browser "https://your_domain:your_portainer_port".
+5) Add in your hosts file:
+
+    127.0.0.1 localhost
+    127.0.0.1 localhost-php7
+
+6) Write on your browser "https://your_domain:your_portainer_port".
 
 <b>By CIMO - https://reinventsoftware.org</b>
 

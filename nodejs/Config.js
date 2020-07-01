@@ -9,7 +9,7 @@ exports.settings = {
     },
     'digest': {
         'realm': "Auth - Digest",
-        'path': `/home/${process.env.WWW_USER_NAME}/root/web_space`,
+        'path': `/home/${process.env.WWW_USER_NAME}/root${process.env.WEB_PATH}`,
         'enable': process.env.NODEJS_DIGEST_ENABLE
     }
 };
