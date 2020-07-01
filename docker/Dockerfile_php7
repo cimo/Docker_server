@@ -1,0 +1,103 @@
+ARG PHP7_VERSION
+
+FROM php:${PHP7_VERSION}-fpm
+
+ARG USER_NAME
+ARG USER_PASSWORD
+ARG WWW_USER_NAME
+ARG WWW_USER_PASSWORD
+ARG WEB_USER_GROUP
+ARG PATH_ROOT
+ARG TIMEZONE
+ARG PHP7_PORT_FPM
+ARG PHP7_PORT_XDEBUG
+ARG PHP7_PATH_ROOT
+ARG PHP7_VH_NAME
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS=yes
+
+COPY ${PATH_ROOT}/zz-docker_php7.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
+COPY ${PATH_ROOT}/override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
+COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
+
+# System
+RUN cd ~ \
+&& chmod +x /usr/local/bin/entrypoint.sh \
+&& cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
+&& apt-get update && apt-get install -y \
+sudo \
+nano \
+tzdata \
+curl \
+make \
+git \
+zip \
+unzip \
+cron \
+wget \
+libfreetype6-dev \
+libjpeg-dev \
+libpng-dev \
+libssl-dev \
+libssh2-1-dev \
+libicu-dev \
+libzip-dev \
+zlib1g-dev \
+libxml2-dev \
+libpq-dev \
+libmagickwand-dev \
+# Time
+&& ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+&& dpkg-reconfigure -f noninteractive tzdata \
+# User sudo
+&& useradd --home /home/${USER_NAME} -g sudo --shell /bin/bash -m ${USER_NAME} \
+&& echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd \
+# User www
+&& useradd --home /home/${WWW_USER_NAME} -g ${WEB_USER_GROUP} --shell /bin/false -m ${WWW_USER_NAME} \
+&& echo "${WWW_USER_NAME}:${WWW_USER_PASSWORD}" | chpasswd \
+&& chown root:root /home/${WWW_USER_NAME} \
+&& mkdir /home/${WWW_USER_NAME}/root \
+# Extension
+&& pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
+&& pear config-set php_bin /usr/local/bin \
+&& echo "\n" | pecl install ssh2-1.2 \
+&& echo "\n" | pecl install apcu-5.1.18 \
+&& echo "\n" | pecl install xdebug-2.9.6 \
+&& echo "\n" | pecl install imagick-3.4.4 \
+&& docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
+&& docker-php-ext-install gd \
+&& docker-php-ext-install intl \
+&& docker-php-ext-install opcache \
+&& docker-php-ext-install zip \
+&& docker-php-ext-install pdo_mysql \
+&& docker-php-ext-install pdo_pgsql \
+# Ini file setting
+&& echo "\n\n \
+opcache.enable=1 \n \
+opcache.memory_consumption=256 \n \
+opcache.max_accelerated_files=20000 \n \
+opcache.revalidate_freq=0 \n \
+opcache.validate_timestamps=0 \n \
+opcache.interned_strings_buffer=16 \n \
+opcache.fast_shutdown=1" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
+&& echo "\n \
+xdebug.remote_enable=on \n \
+xdebug.remote_handler=dbgp \n \
+xdebug.remote_mode=req \n \
+xdebug.remote_host=php_container \n \
+xdebug.remote_port=${PHP7_PORT_XDEBUG} \n \
+xdebug.remote_log=/tmp/xdebug.log \n \
+xdebug.max_nesting_level=1000" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
+# Composer
+&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+# Clean
+&& pecl clear-cache \
+&& rm -rf /var/lib/apt/lists/* \
+&& apt-get clean -y \
+&& apt-get autoclean -y \
+&& apt-get autoremove -y
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+EXPOSE ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}

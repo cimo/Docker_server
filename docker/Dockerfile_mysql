@@ -1,0 +1,40 @@
+ARG MYSQL_VERSION
+
+FROM mysql:${MYSQL_VERSION}
+
+ARG WWW_USER_NAME
+ARG WWW_USER_PASSWORD
+ARG WEB_USER_GROUP
+ARG PATH_ROOT
+ARG TIMEZONE
+ARG MYSQL_PORT
+ARG MYSQL_ROOT_PASSWORD
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS=yes
+
+# System
+RUN cd ~ \
+&& apt-get update && apt-get install -y \
+sudo \
+nano \
+tzdata \
+curl \
+make \
+git \
+zip \
+unzip \
+cron \
+wget \
+# Time
+&& ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+&& dpkg-reconfigure -f noninteractive tzdata \
+# Clean
+&& rm -rf /var/lib/apt/lists/* \
+&& apt-get clean -y \
+&& apt-get autoclean -y \
+&& apt-get autoremove -y
+
+EXPOSE ${MYSQL_PORT}

@@ -1,0 +1,49 @@
+ARG APACHE_VERSION
+
+FROM httpd:${APACHE_VERSION}
+
+ARG WWW_USER_NAME
+ARG WWW_USER_PASSWORD
+ARG WEB_USER_GROUP
+ARG PATH_ROOT
+ARG TIMEZONE
+ARG CERTIFICATE_FILE
+ARG CERTIFICATE_KEY
+ARG CERTIFICATE_CHAIN
+ARG DOMAIN
+ARG APACHE_PORT_HTTP
+ARG APACHE_PORT_HTTPS
+ARG APACHE_PATH_ROOT
+ARG PHP5_PORT_FPM
+ARG PHP5_VH_NAME
+ARG PHP7_PORT_FPM
+ARG PHP7_VH_NAME
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS=yes
+
+COPY ${PATH_ROOT}/httpd.conf ${APACHE_PATH_ROOT}/conf/httpd.conf
+
+# System
+RUN cd ~ \
+&& apt-get update && apt-get install -y \
+sudo \
+nano \
+tzdata \
+curl \
+make \
+git \
+zip \
+unzip \
+cron \
+wget \
+# Time
+&& ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+&& dpkg-reconfigure -f noninteractive tzdata \
+# Clean
+&& rm -rf /var/lib/apt/lists/* \
+&& apt-get clean -y \
+&& apt-get autoclean -y \
+&& apt-get autoremove -y
+
+EXPOSE ${APACHE_PORT_HTTP} ${APACHE_PORT_HTTPS}

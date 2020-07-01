@@ -1,0 +1,218 @@
+version: '3.8'
+services:
+  portainer_container:
+    container_name: portainer
+    image: portainer/portainer
+    command: --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PORTAINER_DATA_PATH}:/data
+      - ${PORTAINER_SSL_PATH}:/certs
+    ports:
+      - ${PORTAINER_PORT}:${PORTAINER_PORT}
+    networks:
+      docker_server:
+        ipv4_address: ${PORTAINER_NETWORK_IP}
+  php7_container:
+    container_name: Php_${PHP7_VERSION}-fpm
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_php7
+      args:
+        USER_NAME: ${USER_NAME}
+        USER_PASSWORD: ${USER_PASSWORD}
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+        WEB_USER_GROUP: ${WEB_USER_GROUP}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+        PHP7_VERSION: ${PHP7_VERSION}
+        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+        PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
+        PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
+        PHP7_VH_NAME: ${PHP7_VH_NAME}
+    environment:
+      USER_NAME: ${USER_NAME}
+      USER_PASSWORD: ${USER_PASSWORD}
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+      WEB_USER_GROUP: ${WEB_USER_GROUP}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+      PHP7_VERSION: ${PHP7_VERSION}
+      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+      PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
+      PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
+      PHP7_VH_NAME: ${PHP7_VH_NAME}
+    ports:
+      - 127.0.0.1:${PHP7_PORT_FPM}:${PHP7_PORT_FPM}
+      - ${PHP7_PORT_XDEBUG}:${PHP7_PORT_XDEBUG}
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+    networks:
+      docker_server:
+        ipv4_address: ${PHP7_NETWORK_IP}
+  apache_container:
+    container_name: Apache_${APACHE_VERSION}
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_apache
+      args:
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+        WEB_USER_GROUP: ${WEB_USER_GROUP}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+        CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+        CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+        CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+        DOMAIN: ${DOMAIN}
+        APACHE_VERSION: ${APACHE_VERSION}
+        APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
+        APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
+        APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
+        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+        PHP7_VH_NAME: ${PHP7_VH_NAME}
+    environment:
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+      WEB_USER_GROUP: ${WEB_USER_GROUP}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+      CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+      CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+      CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+      DOMAIN: ${DOMAIN}
+      APACHE_VERSION: ${APACHE_VERSION}
+      APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
+      APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
+      APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
+      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+      PHP7_VH_NAME: ${PHP7_VH_NAME}
+    ports:
+      - ${APACHE_PORT_HTTP}:80
+      - ${APACHE_PORT_HTTPS}:443
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+      - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
+    depends_on:
+      - php7_container
+    networks:
+      docker_server:
+        ipv4_address: ${APACHE_NETWORK_IP}
+  mysql_container:
+    container_name: MySql_${MYSQL_VERSION}
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_mysql
+      args:
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+        WEB_USER_GROUP: ${WEB_USER_GROUP}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+        MYSQL_VERSION: ${MYSQL_VERSION}
+        MYSQL_PORT: ${MYSQL_PORT}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    environment:
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+      WEB_USER_GROUP: ${WEB_USER_GROUP}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+      MYSQL_VERSION: ${MYSQL_VERSION}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 127.0.0.1:${MYSQL_PORT}:3306
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+    depends_on:
+      - apache_container
+    networks:
+      docker_server:
+        ipv4_address: ${MYSQL_NETWORK_IP}
+  postgresql_container:
+    container_name: PostgreSql_${POSTGRES_VERSION}
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_postgresql
+      args:
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+        WEB_USER_GROUP: ${WEB_USER_GROUP}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+        POSTGRES_VERSION: ${POSTGRES_VERSION}
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    environment:
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+      WEB_USER_GROUP: ${WEB_USER_GROUP}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+      POSTGRES_VERSION: ${POSTGRES_VERSION}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 127.0.0.1:${POSTGRES_PORT}:5432
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+    depends_on:
+      - apache_container
+    networks:
+      docker_server:
+        ipv4_address: ${POSTGRES_NETWORK_IP}
+  nodejs_container:
+    container_name: NodeJs_${NODEJS_VERSION}
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_nodejs
+      args:
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+        CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+        CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+        CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+        NODEJS_VERSION: ${NODEJS_VERSION}
+        NODEJS_ENV: ${NODEJS_ENV}
+        NODEJS_SERVER_NAME: ${NODEJS_SERVER_NAME}
+        NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+        NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+        NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
+    environment:
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+      CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+      CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+      CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+      NODEJS_VERSION: ${NODEJS_VERSION}
+      NODEJS_ENV: ${NODEJS_ENV}
+      NODEJS_SERVER_NAME: ${NODEJS_SERVER_NAME}
+      NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+      NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+      NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
+    ports:
+      - 127.0.0.1:${NODEJS_PORT_HTTP}:${NODEJS_PORT_HTTP}
+      - 127.0.0.1:${NODEJS_PORT_HTTPS}:${NODEJS_PORT_HTTPS}
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+    networks:
+      docker_server:
+        ipv4_address: ${NODEJS_NETWORK_IP}
+networks:
+  docker_server:
+    driver: ${NETWORK_DRIVER}
+    ipam:
+      driver: default
+      config:
+        - subnet: ${NETWORK_SUB}
