@@ -131,6 +131,7 @@ services:
       - 127.0.0.1:${MYSQL_PORT}:3306
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+      - ${MYSQL_DATA_PATH}:/var/lib/mysql
     depends_on:
       - apache_container
     networks:
@@ -165,6 +166,7 @@ services:
       - 127.0.0.1:${POSTGRES_PORT}:5432
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
     depends_on:
       - apache_container
     networks:
