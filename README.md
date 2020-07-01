@@ -3,6 +3,10 @@ Web server
 
 Web server with docker container.
 
+| Info: |
+|:---|
+| Cross platform (Windows docker, Linux docker, Mac docker) |
+
 | Conatiner: |
 |:---|
 | Php 7.4-fpm |
