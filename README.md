@@ -1,7 +1,7 @@
-Linux server
+Web server
 ==============
 
-Linux server with docker container.
+Web server with docker container.
 
 | Conatiner: |
 |:---|
