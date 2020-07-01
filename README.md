@@ -15,11 +15,30 @@ Web server with docker container.
 | PostgreSql 10.13 |
 | NodeJs 12.17.10 |
 
+## Instructions:
+1) Copy file on your server (for example /home/cimo/docker_server).
+
+2) Write on terminal:
+
+    cd /home/cimo/docker_server
+    
+    sudo cp .env.dist .env
+    
+    sudo nano .env
+
+3) Modify file with your configuration, save and close the file.
+
+4) Add shared folder in your docker and write on terminal:
+    
+    docker-compose up -d --build
+
+5) Write on your browser "https://your_domain:your_portainer_port".
+
+<b>By CIMO - https://reinventsoftware.org</b>
+
 | Library: |
 |:---|
 | Docker - https://www.docker.com/ |
-
-<b>By CIMO - https://reinventsoftware.org</b>
 
 Supported By:
 
