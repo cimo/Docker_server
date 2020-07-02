@@ -232,6 +232,8 @@ services:
       WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
+    ports:
+      - 127.0.0.1:${NEXTCLOUD_PORT}:${NEXTCLOUD_PORT}
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${NEXTCLOUD_DATA_PATH}:/var/www/html/data

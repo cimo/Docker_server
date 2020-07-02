@@ -13,7 +13,7 @@ ARG CERTIFICATE_CHAIN
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
-COPY ${PATH_ROOT}/supervisord.conf /usr/bin/supervisord/supervisord.conf
+COPY ${PATH_ROOT}/entrypoint_nextcloud.sh /usr/local/bin/entrypoint.sh
 
 # System
 RUN cd ~ \
@@ -29,9 +29,6 @@ zip \
 unzip \
 cron \
 wget \
-supervisor \
-# Supervisor
-&& mkdir /var/log/supervisord /var/run/supervisord \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
@@ -40,5 +37,7 @@ supervisor \
 && apt-get clean -y \
 && apt-get autoclean -y \
 && apt-get autoremove -y
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE ${NEXTCLOUD_PORT}
