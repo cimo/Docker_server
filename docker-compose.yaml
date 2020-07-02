@@ -218,7 +218,7 @@ services:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
   nextcloud_container:
-    container_name: Nextcloud_${NEXTCLOUD_VERSION}-fpm
+    container_name: Nextcloud
     build:
       context: ${PATH_ROOT}/docker
       dockerfile: Dockerfile_nextcloud
@@ -233,8 +233,7 @@ services:
       WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
-      NEXTCLOUD_VERSION: ${NEXTCLOUD_VERSION}
-      POSTGRES_HOST: postgresql_container
+      NEXTCLOUD_OS_VERSION: ${NEXTCLOUD_OS_VERSION}
     ports:
       - 127.0.0.1:${NEXTCLOUD_PORT}:${NEXTCLOUD_PORT}
     volumes:
