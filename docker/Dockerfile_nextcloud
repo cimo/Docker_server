@@ -39,6 +39,6 @@ supervisor \
 && apt-get autoclean -y \
 && apt-get autoremove -y
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
 
 EXPOSE ${NEXTCLOUD_PORT}
