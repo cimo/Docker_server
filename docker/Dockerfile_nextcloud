@@ -15,7 +15,6 @@ COPY ${PATH_ROOT}/supervisord.conf /
 
 # System
 RUN cd ~ \
-&& chmod +x /usr/local/bin/entrypoint.sh \
 && apt-get update && apt-get install -y \
 sudo \
 nano \
