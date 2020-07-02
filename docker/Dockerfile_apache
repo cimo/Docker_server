@@ -38,6 +38,7 @@ zip \
 unzip \
 cron \
 wget \
+apache2-utils \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
