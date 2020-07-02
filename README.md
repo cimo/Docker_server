@@ -14,6 +14,7 @@ Web server with docker container.
 | MySql 5.7 |
 | PostgreSql 10.13 |
 | NodeJs 12.17.10 |
+| Nextcloud 19.0.0 |
 
 ## Instructions:
 1) Copy file on your server (for example /home/cimo/docker_server).

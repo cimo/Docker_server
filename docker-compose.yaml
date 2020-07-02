@@ -76,6 +76,7 @@ services:
         APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
         PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
+        NEXTCLOUD_PORT: ${NEXTCLOUD_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -93,6 +94,7 @@ services:
       APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
       PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
+      NEXTCLOUD_PORT: ${NEXTCLOUD_PORT}
     ports:
       - ${APACHE_PORT_HTTP}:80
       - ${APACHE_PORT_HTTPS}:443
@@ -138,8 +140,6 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
-    depends_on:
-      - apache_container
     networks:
       default:
         ipv4_address: ${MYSQL_NETWORK_IP}
@@ -175,8 +175,6 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
-    depends_on:
-      - apache_container
     networks:
       default:
         ipv4_address: ${POSTGRES_NETWORK_IP}
@@ -219,6 +217,29 @@ services:
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
+  nextcloud_container:
+    container_name: Nextcloud_${NEXTCLOUD_VERSION}-fpm
+    build:
+      context: ${PATH_ROOT}/docker
+      dockerfile: Dockerfile_nextcloud
+      args:
+        WWW_USER_NAME: ${WWW_USER_NAME}
+        WEB_PATH: ${WEB_PATH}
+        PATH_ROOT: ${PATH_ROOT}
+        TIMEZONE: ${TIMEZONE}
+    environment:
+      WWW_USER_NAME: ${WWW_USER_NAME}
+      WEB_PATH: ${WEB_PATH}
+      PATH_ROOT: ${PATH_ROOT}
+      TIMEZONE: ${TIMEZONE}
+    volumes:
+      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+      - ${NEXTCLOUD_DATA_PATH}:/var/www/html/data
+    links:
+      - postgresql_container
+    networks:
+      default:
+        ipv4_address: ${NEXTCLOUD_NETWORK_IP}
 networks:
   default:
     driver: ${NETWORK_DRIVER}
