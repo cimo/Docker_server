@@ -40,7 +40,7 @@ Web server with docker container.
 
 4) Add your path in the shared folder docker dashboard and write on terminal:
 
-    docker-compose up -d --build
+    sudo docker-compose up -d --build
 
 5) Add in your hosts file:
 
