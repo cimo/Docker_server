@@ -49,6 +49,11 @@ zlib1g-dev \
 libxml2-dev \
 libpq-dev \
 libmagickwand-dev \
+libgmp-dev \
+re2c  \
+libmhash-dev \
+libmcrypt-dev \
+file \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
@@ -61,6 +66,7 @@ libmagickwand-dev \
 && chown root:root /home/${WWW_USER_NAME} \
 && mkdir /home/${WWW_USER_NAME}/root \
 # Extension
+&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
 && pear config-set php_bin /usr/local/bin \
 && echo "\n" | pecl install ssh2-1.2 \
@@ -68,12 +74,15 @@ libmagickwand-dev \
 && echo "\n" | pecl install xdebug-2.9.6 \
 && echo "\n" | pecl install imagick-3.4.4 \
 && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
+&& docker-php-ext-configure gmp \
 && docker-php-ext-install gd \
 && docker-php-ext-install intl \
 && docker-php-ext-install opcache \
 && docker-php-ext-install zip \
 && docker-php-ext-install pdo_mysql \
 && docker-php-ext-install pdo_pgsql \
+&& docker-php-ext-install bcmath \
+&& docker-php-ext-install gmp \
 # Ini file setting
 && echo "\n\n \
 opcache.enable=1 \n \
