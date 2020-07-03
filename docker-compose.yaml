@@ -242,7 +242,6 @@ services:
       NEXTCLOUD_OS_VERSION: ${NEXTCLOUD_OS_VERSION}
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${NEXTCLOUD_DATA_VOLUME}:/home/${WWW_USER_NAME}/root/nextcloud
     depends_on:
       - postgresql_container
     networks:
@@ -255,3 +254,9 @@ networks:
       driver: default
       config:
         - subnet: ${NETWORK_SUB}
+#volumes:
+#  home:
+#    driver_opts:
+#      type: none
+#      device: /home
+#      o: bind

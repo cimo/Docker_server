@@ -14,7 +14,7 @@ Web server with docker container.
 | MySql 5.7 |
 | PostgreSql 10.13 |
 | NodeJs 12.17.10 |
-| Nextcloud 19.0.0 |
+| Nextcloud |
 
 ## Instructions:
 1) Copy file on your server (for example /home/cimo/docker_server).
@@ -49,6 +49,8 @@ Web server with docker container.
     127.0.0.1 localhost-php7
 
 6) Write on your browser "https://your_domain:your_portainer_port".
+
+7) For configure nextcloud write on your browser "https://your_domain_to_nextcloud".
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
