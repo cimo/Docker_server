@@ -21,6 +21,7 @@ ENV DEBCONF_NOWARNINGS=yes
 COPY ${PATH_ROOT}/zz-docker_php7.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
 COPY ${PATH_ROOT}/override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
 COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
+COPY ${PATH_ROOT}/setup-nextcloud.php /home/setup-nextcloud.php
 
 # System
 RUN cd ~ \

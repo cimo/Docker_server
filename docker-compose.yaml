@@ -215,38 +215,6 @@ services:
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
-  nextcloud_container:
-    container_name: Nextcloud
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_nextcloud
-      args:
-        USER_NAME: ${USER_NAME}
-        USER_PASSWORD: ${USER_PASSWORD}
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        NEXTCLOUD_OS_VERSION: ${NEXTCLOUD_OS_VERSION}
-    environment:
-      USER_NAME: ${USER_NAME}
-      USER_PASSWORD: ${USER_PASSWORD}
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      NEXTCLOUD_OS_VERSION: ${NEXTCLOUD_OS_VERSION}
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-    depends_on:
-      - postgresql_container
-    networks:
-      default:
-        ipv4_address: ${NEXTCLOUD_NETWORK_IP}
 networks:
   default:
     driver: ${NETWORK_DRIVER}
