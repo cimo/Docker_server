@@ -54,16 +54,19 @@ Web server with docker container.
 
 8) Write on terminal:
 
-    sudo chmod 775 /home/[your_www_user_name]/root[your_web_path]nextcloud
-    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -type d -exec chown [your_www_user_name]:[your_web_user_group] {} \; -exec chmod 775 {} \;
-    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -type f -not -name "sess_*" -exec chown [your_www_user_name]:[your_web_user_group] {} \; -exec chmod 664 {} \;
-    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -name "*.sh" -exec chmod 774 {} \;
     sudo crontab -e -u www-data
 
 9) Inserire:
 
     # NextCloud
     */15 * * * * php -f /home/[your_user_name]/docker_server[your_web_path]nextcloud/cron.php
+
+10) Save, close the file and write on terminal:
+
+    sudo chmod 755 /home/[your_www_user_name]/root[your_web_path]
+    sudo find /home/[your_www_user_name]/root[your_web_path] -type d -exec chown [your_web_user_group]:sudo {} \; -exec chmod 755 {} \;
+    sudo find /home/[your_www_user_name]/root[your_web_path] -type f -not -name "sess_*" -exec chown [your_web_user_group]:sudo {} \; -exec chmod 644 {} \;
+    sudo find /home/[your_www_user_name]/root[your_web_path] -name "*.sh" -exec chmod 744 {} \;
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
