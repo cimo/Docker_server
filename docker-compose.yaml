@@ -222,7 +222,9 @@ services:
       dockerfile: Dockerfile_nextcloud
       args:
         USER_NAME: ${USER_NAME}
+        USER_PASSWORD: ${USER_PASSWORD}
         WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
         WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
@@ -230,7 +232,9 @@ services:
         NEXTCLOUD_OS_VERSION: ${NEXTCLOUD_OS_VERSION}
     environment:
       USER_NAME: ${USER_NAME}
+      USER_PASSWORD: ${USER_PASSWORD}
       WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
       WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
