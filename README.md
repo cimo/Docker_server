@@ -50,7 +50,7 @@ Web server with docker container.
 
 6) Write on your browser "https://your_domain:your_portainer_port".
 
-7) For configure nextcloud write on your browser "https://your_domain_to_nextcloud".
+7) For configure nextcloud write on your browser "https://your_domain/setup-nextcloud.php".
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
