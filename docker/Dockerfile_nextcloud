@@ -2,7 +2,9 @@ ARG NEXTCLOUD_OS_VERSION
 
 FROM ubuntu:${NEXTCLOUD_OS_VERSION}
 
+ARG USER_NAME
 ARG WWW_USER_NAME
+ARG WEB_USER_GROUP
 ARG WEB_PATH
 ARG PATH_ROOT
 ARG TIMEZONE
@@ -11,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
 COPY ${PATH_ROOT}/entrypoint_nextcloud.sh /usr/local/bin/entrypoint.sh
-COPY ${PATH_ROOT}/setup-nextcloud.php /home/setup-nextcloud.php
+COPY ${PATH_ROOT}/setup-nextcloud.php /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud/setup-nextcloud.php
 
 # System
 RUN cd ~ \
@@ -30,6 +32,9 @@ wget \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
+# Setup
+&& chmod 775 /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud \
+&& chown ${USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud \
 # Clean
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean -y \
