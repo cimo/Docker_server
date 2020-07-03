@@ -52,6 +52,13 @@ Web server with docker container.
 
 7) For configure nextcloud write on your browser "https://your_domain/setup-nextcloud.php".
 
+8) Write on terminal:
+
+    chmod 775 /home/[your_www_user_name]/root[your_web_path]nextcloud
+    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -type d -exec chown user_1:www-data {} \; -exec chmod 775 {} \;
+    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -type f -not -name "sess_*" -exec chown user_1:www-data {} \; -exec chmod 664 {} \;
+    sudo find /home/[your_www_user_name]/root[your_web_path]nextcloud -name "*.sh" -exec chmod 774 {} \;
+
 <b>By CIMO - https://reinventsoftware.org</b>
 
 | Library: |
