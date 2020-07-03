@@ -38,6 +38,8 @@ zip \
 unzip \
 cron \
 wget \
+re2c \
+file \
 libfreetype6-dev \
 libjpeg-dev \
 libpng-dev \
@@ -50,10 +52,12 @@ libxml2-dev \
 libpq-dev \
 libmagickwand-dev \
 libgmp-dev \
-re2c  \
 libmhash-dev \
 libmcrypt-dev \
-file \
+libmemcached11 \
+libmemcachedutil2 \
+libmemcached-dev \
+libz-dev \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
@@ -67,6 +71,14 @@ file \
 && mkdir /home/${WWW_USER_NAME}/root \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached \
+&& cd php-memcached \
+&& phpize \
+&& ./configure \
+&& make \
+&& make install \
+&& cd .. \
+&& rm -rf php-memcached \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
 && pear config-set php_bin /usr/local/bin \
 && echo "\n" | pecl install ssh2-1.2 \
