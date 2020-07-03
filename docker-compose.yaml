@@ -51,7 +51,7 @@ services:
       - ${PHP7_PORT_XDEBUG}:${PHP7_PORT_XDEBUG}
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - share-volume:/home/${WWW_USER_NAME}/root
+      - share-volume:/home/${WWW_USER_NAME}/root/nextcloud
     networks:
       default:
         ipv4_address: ${PHP7_NETWORK_IP}
@@ -102,7 +102,7 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
-      - share-volume:/home/${WWW_USER_NAME}/root
+      - share-volume:/home/${WWW_USER_NAME}/root/nextcloud
     depends_on:
       - php7_container
     networks:
