@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
 COPY ${PATH_ROOT}/entrypoint_nextcloud.sh /usr/local/bin/entrypoint.sh
-COPY ${PATH_ROOT}/setup-nextcloud.php /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud/setup-nextcloud.php
+COPY ${PATH_ROOT}/setup-nextcloud.php /home/setup-nextcloud.php
 
 # System
 RUN cd ~ \
