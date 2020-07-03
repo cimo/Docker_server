@@ -54,6 +54,14 @@ Web server with docker container.
 
 8) Write on terminal:
 
+    sudo chmod 775 /home/cimo/docker_server/web_space/nextcloud
+        
+    sudo find /home/cimo/docker_server/web_space/nextcloud -type d -exec chown www-data:www-data {} \; -exec chmod 775 {} \;
+        
+    sudo find /home/cimo/docker_server/web_space/nextcloud -type f -not -name "sess_*" -exec chown www-data:www-data {} \; -exec chmod 664 {} \;
+        
+    sudo find /home/cimo/docker_server/web_space/nextcloud -name "*.sh" -exec chmod 774 {} \;
+
     sudo chmod 770 /home/cimo/docker_server/web_space/nextcloud/data
     
     sudo crontab -e -u www-data
