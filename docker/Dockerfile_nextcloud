@@ -44,7 +44,7 @@ wget \
 && mkdir /home/${WWW_USER_NAME}/root \
 # Setup
 && mkdir -p /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud \
-&& cp /home/setup-nextcloud.php /home${WWW_USER_NAME}/root${WEB_PATH}nextcloud/setup-nextcloud.php \
+&& cp /home/setup-nextcloud.php /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud/setup-nextcloud.php \
 && chmod 775 /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud \
 && chown ${USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root${WEB_PATH}nextcloud \
 # Clean
