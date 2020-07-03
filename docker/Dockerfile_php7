@@ -54,10 +54,8 @@ libmagickwand-dev \
 libgmp-dev \
 libmhash-dev \
 libmcrypt-dev \
-libmemcached11 \
-libmemcachedutil2 \
 libmemcached-dev \
-libz-dev \
+zlib1g-dev \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
@@ -71,20 +69,13 @@ libz-dev \
 && mkdir /home/${WWW_USER_NAME}/root \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
-&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached \
-&& cd php-memcached \
-&& phpize \
-&& ./configure \
-&& make \
-&& make install \
-&& cd .. \
-&& rm -rf php-memcached \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
 && pear config-set php_bin /usr/local/bin \
 && echo "\n" | pecl install ssh2-1.2 \
 && echo "\n" | pecl install apcu-5.1.18 \
 && echo "\n" | pecl install xdebug-2.9.6 \
 && echo "\n" | pecl install imagick-3.4.4 \
+&& echo "\n" | pecl install memcached-3.1.5 \
 && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
 && docker-php-ext-configure gmp \
 && docker-php-ext-install gd \
