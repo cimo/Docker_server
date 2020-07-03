@@ -31,13 +31,13 @@ Web server with docker container.
 
 3) Modify file with your configuration, save, close the file and write on terminal:
 
-    sudo chmod 775 web_space
-
-    sudo find web_space -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
-
-    sudo find web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
-
-    sudo find web_space -name "*.sh" -exec chmod 774 {} \;
+    sudo chmod 775 /home/cimo/docker_server/web_space
+    
+    sudo find /home/cimo/docker_server/web_space -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
+    
+    sudo find /home/cimo/docker_server/web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
+    
+    sudo find /home/cimo/docker_server/web_space -name "*.sh" -exec chmod 774 {} \;
 
 4) Add your path in the shared folder docker dashboard and write on terminal:
 
@@ -48,22 +48,20 @@ Web server with docker container.
     127.0.0.1 localhost
     127.0.0.1 localhost-php7
 
-6) Write on your browser "https://your_domain:your_portainer_port".
+6) For launch portainer write on your browser "https://your_domain:your_portainer_port".
 
-7) For configure nextcloud write on your browser "https://your_domain/setup-nextcloud.php".
+7) For launch nextcloud write on your browser "https://your_domain/setup-nextcloud.php".
 
 8) Write on terminal:
 
-    sudo chmod 775 /home/[your_www_user_name]/root[your_web_path]
-    sudo find /home/[your_www_user_name]/root[your_web_path] -type d -exec chown [your_web_user_group]:sudo {} \; -exec chmod 775 {} \;
-    sudo find /home/[your_www_user_name]/root[your_web_path] -type f -not -name "sess_*" -exec chown [your_web_user_group]:sudo {} \; -exec chmod 664 {} \;
-    sudo find /home/[your_www_user_name]/root[your_web_path] -name "*.sh" -exec chmod 774 {} \;
+    sudo chmod 770 /home/cimo/docker_server/web_space/nextcloud/data
+    
     sudo crontab -e -u www-data
 
 9) Inserire:
 
     # NextCloud
-    */15 * * * * php -f /home/[your_user_name]/docker_server[your_web_path]nextcloud/cron.php
+    */15 * * * * php -f /home/cimo/docker_server/web_space/nextcloud/cron.php
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
