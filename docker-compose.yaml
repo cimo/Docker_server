@@ -253,6 +253,6 @@ networks:
         - subnet: ${NETWORK_SUB}
 volumes:
   nextcloud_data:
-    driver: host
+    driver: local
     driver_opts:
       source: ${NEXTCLOUD_DATA_VOLUME}
