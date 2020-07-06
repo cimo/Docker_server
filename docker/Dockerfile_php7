@@ -59,13 +59,14 @@ zlib1g-dev \
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
 # User sudo
-&& useradd --home /home/${USER_NAME} -g sudo --shell /bin/bash -m ${USER_NAME} \
+&& useradd --home /home/${USER_NAME} -g sudo -G ${WEB_USER_GROUP} --shell /bin/bash -m ${USER_NAME} \
 && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd \
 # User www
 && useradd --home /home/${WWW_USER_NAME} -g ${WEB_USER_GROUP} --shell /bin/false -m ${WWW_USER_NAME} \
 && echo "${WWW_USER_NAME}:${WWW_USER_PASSWORD}" | chpasswd \
 && chown root:root /home/${WWW_USER_NAME} \
 && mkdir /home/${WWW_USER_NAME}/root \
+&& chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
@@ -98,7 +99,7 @@ opcache.fast_shutdown=1" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
 xdebug.remote_enable=on \n \
 xdebug.remote_handler=dbgp \n \
 xdebug.remote_mode=req \n \
-xdebug.remote_host=php_container \n \
+xdebug.remote_host=127.0.0.1 \n \
 xdebug.remote_port=${PHP7_PORT_XDEBUG} \n \
 xdebug.remote_log=/tmp/xdebug.log \n \
 xdebug.max_nesting_level=1000" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
