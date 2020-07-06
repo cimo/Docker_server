@@ -3,13 +3,13 @@ services:
   portainer_container:
     container_name: portainer
     image: portainer/portainer
-    command: -p ${PORTAINER_PORT}:9000 --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    command: --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PORTAINER_DATA_PATH}:/data
       - ${PORTAINER_SSL_PATH}:/certs
     ports:
-      - ${PORTAINER_PORT}:9000
+      - 127.0.0.1:${PORTAINER_PORT}:9000
     networks:
       default:
         ipv4_address: ${PORTAINER_NETWORK_IP}

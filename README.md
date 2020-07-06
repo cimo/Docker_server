@@ -83,7 +83,7 @@ Coming soon...
 
     'memcache.local' => '\OC\Memcache\APCu'
 
-12) Save and close the file.
+12) Save, close the file and remove "setup-nextcloud.php" from the server.
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
