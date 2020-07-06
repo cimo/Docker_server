@@ -16,7 +16,7 @@ Web server with docker container.
 | NodeJs 12.17.10 |
 | Nextcloud |
 
-## Instructions:
+## Server:
 1) Copy file on your server (for example /home/cimo/docker_server).
 
 2) Write on terminal:
@@ -48,9 +48,13 @@ Web server with docker container.
     127.0.0.1 localhost
     127.0.0.1 localhost-php7
 
-6) For launch portainer write on your browser "https://your_domain:your_portainer_port".
+6) For launch portainer write on your browser "https://portainer.your_domain".
 
-7) For launch nextcloud write on your browser "https://your_domain/setup-nextcloud.php".
+## Email:
+Coming soon...
+
+## Nextcloud:
+7) For launch nextcloud write on your browser "https://nextcloud.your_domain/setup-nextcloud.php".
 
 8) Write on terminal:
 
@@ -66,10 +70,20 @@ Web server with docker container.
     
     sudo crontab -e -u www-data
 
-9) Inserire:
+9) Insert:
 
     # NextCloud
-    */15 * * * * php -f /home/cimo/docker_server/web_space/nextcloud/cron.php
+    */5 * * * * php -f /home/cimo/docker_server/web_space/nextcloud/cron.php
+
+10) Save, close the file and write on terminal:
+
+    sudo nano /home/cimo/docker_server/web_space/nextcloud/config/config.php
+
+11) Insert:
+
+    'memcache.local' => '\OC\Memcache\APCu'
+
+12) Save and close the file.
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
