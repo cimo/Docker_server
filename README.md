@@ -29,7 +29,11 @@ Web server with docker container.
     
     sudo nano .env
 
-3) Modify file with your configuration, save, close the file and write on terminal:
+3) Modify file with your configuration, save, close the file, add your path in the shared folder docker dashboard and write on terminal:
+
+    sudo docker-compose up -d --build
+
+4) Write on terminal:
 
     sudo chmod 775 /home/cimo/docker_server/web_space
     
@@ -38,10 +42,6 @@ Web server with docker container.
     sudo find /home/cimo/docker_server/web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
     
     sudo find /home/cimo/docker_server/web_space -name "*.sh" -exec chmod 774 {} \;
-
-4) Add your path in the shared folder docker dashboard and write on terminal:
-
-    sudo docker-compose up -d --build
 
 5) Add in your hosts file:
 
