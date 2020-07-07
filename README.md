@@ -72,7 +72,6 @@ Coming soon...
 
 9) Insert:
 
-    # NextCloud
     */5 * * * * php -f /home/cimo/docker_server/web_space/nextcloud/cron.php
 
 10) Save, close the file and write on terminal:
