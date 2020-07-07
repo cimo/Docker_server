@@ -60,6 +60,7 @@ Coming soon...
         sudo crontab -e -u www-data
 
 9) Insert:
+        
         # Nextcloud
         */5 * * * * php -f /home/cimo/docker_server/web_space/nextcloud/cron.php
 
