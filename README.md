@@ -78,6 +78,7 @@ Coming soon...
 
 13) Write on terminal:
 
+        sudo mkdir /home/docker_server_data/gitlab
         sudo nano /etc/gitlab/gitlab.rb
 
 14) Edit:

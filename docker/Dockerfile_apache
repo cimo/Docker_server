@@ -40,6 +40,10 @@ apache2-utils \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
+# Gitlab
+&& curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash \
+&& apt-get install gitlab-ce -y \
+&& gitlab-ctl stop \
 # Clean
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean -y \
