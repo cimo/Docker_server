@@ -8,8 +8,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PORTAINER_DATA_PATH}:/data
       - ${PORTAINER_SSL_PATH}:/certs
-    ports:
-      - 127.0.0.1:${PORTAINER_PORT}:9000
     networks:
       default:
         ipv4_address: ${PORTAINER_NETWORK_IP}
@@ -74,7 +72,6 @@ services:
         APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
         APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
         APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-        PORTAINER_PORT: ${PORTAINER_PORT}
         PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
     environment:
@@ -92,7 +89,6 @@ services:
       APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
       APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
       APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-      PORTAINER_PORT: ${PORTAINER_PORT}
       PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
     ports:

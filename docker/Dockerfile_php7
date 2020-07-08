@@ -105,6 +105,11 @@ xdebug.remote_log=/tmp/xdebug.log \n \
 xdebug.max_nesting_level=1000" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
 # Composer
 && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+# Gitlab
+&& curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash \
+&& apt-get install gitlab-ce \
+&& gitlab-ctl stop \
+&& mkdir /home/docker_server_data/gitlab \
 # Clean
 && pecl clear-cache \
 && rm -rf /var/lib/apt/lists/* \
