@@ -104,6 +104,7 @@ services:
         ipv4_address: ${APACHE_NETWORK_IP}
   mysql_container:
     container_name: MySql_${MYSQL_VERSION}
+    command: --sql_mode=""
     build:
       context: ${PATH_ROOT}/docker
       dockerfile: Dockerfile_mysql
