@@ -3,9 +3,9 @@ services:
   portainer_container:
     container_name: portainer
     image: portainer/portainer
-    command: --no-auth --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     ports:
-      - ${PORTAINER_PORT}:9000
+      - 127.0.0.1:${PORTAINER_PORT}:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PORTAINER_DATA_PATH}:/data
@@ -99,8 +99,6 @@ services:
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
-    depends_on:
-      - php7_container
     networks:
       default:
         ipv4_address: ${APACHE_NETWORK_IP}
