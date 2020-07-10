@@ -58,7 +58,7 @@ unicorn['port'] = ${APACHE_GITLAB_PORT_UNICORN} \n \
 unicorn['socket'] = '/var/opt/gitlab/gitlab-rails/sockets/gitlab.socket' \n \
 web_server['external_users'] = ['www-data'] \n \
 nginx['enable'] = false" >> /etc/gitlab/gitlab.rb \
-&& /opt/gitlab/embedded/bin/runsvdir-start & \
+&& '/opt/gitlab/embedded/bin/runsvdir-start &' \
 && gitlab-ctl reconfigure \
 # Clean
 && rm -rf /var/lib/apt/lists/* \
