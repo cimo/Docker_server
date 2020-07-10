@@ -15,6 +15,9 @@ ARG DOMAIN
 ARG APACHE_PORT_HTTP
 ARG APACHE_PORT_HTTPS
 ARG APACHE_PATH_ROOT
+ARG APACHE_GITLAB_PORT
+ARG APACHE_GITLAB_PORT_UNICORN
+ARG APACHE_GITLAB_DATA_PATH
 ARG PHP7_PORT_FPM
 ARG PHP7_VH_NAME
 
@@ -44,6 +47,18 @@ apache2-utils \
 && curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash \
 && apt-get install gitlab-ce -y \
 && gitlab-ctl stop \
+&& > /etc/gitlab/gitlab.rb \
+&& echo "\n\n \
+external_url 'https://gitlab.${DOMAIN}' \n \
+git_data_dirs({"default" => {"path" => "${APACHE_GITLAB_DATA_PATH}"}}) \n \
+gitlab_workhorse['listen_network'] = "tcp" \n \
+gitlab_workhorse['listen_addr'] = “127.0.0.1:${APACHE_GITLAB_PORT}” \n \
+unicorn['listen'] = '127.0.0.1' \n \
+unicorn['port'] = ${APACHE_GITLAB_PORT_UNICORN} \n \
+unicorn['socket'] = '/var/opt/gitlab/gitlab-rails/sockets/gitlab.socket' \n \
+web_server['external_users'] = ['www-data'] \n \
+nginx['enable'] = false" >> /etc/gitlab/gitlab.rb \
+&& gitlab-ctl reconfigure \
 # Clean
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean -y \

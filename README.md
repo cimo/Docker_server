@@ -76,27 +76,7 @@ Coming soon...
 
 ## Gitlab:
 
-13) Write on apache_container terminal:
-
-        sudo nano /etc/gitlab/gitlab.rb
-
-14) Edit:
-
-        external_url “https://gitlab.reinventsoftware.org”
-        git_data_dirs({"default" => {"path" => "/home/docker_server_data/gitlab"}})
-        gitlab_workhorse['listen_network'] = "tcp"
-        gitlab_workhorse['listen_addr'] = “127.0.0.1:8888”
-        unicorn['listen'] = '127.0.0.1'
-        unicorn['port'] = 8889
-        unicorn['socket'] = '/var/opt/gitlab/gitlab-rails/sockets/gitlab.socket'
-        web_server['external_users'] = ['www-data']
-        nginx['enable'] = false
-
-15) Save, close the file and write on terminal:
-
-        sudo gitlab-ctl reconfigure
-
-16) For launch gitlab write on your browser "https://gitlab.your_domain".
+13) For launch gitlab write on your browser "https://gitlab.your_domain".
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
