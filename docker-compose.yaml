@@ -3,7 +3,9 @@ services:
   portainer_container:
     container_name: portainer
     image: portainer/portainer
-    command: --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    command: --no-auth --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    ports:
+      - ${PORTAINER_PORT}:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PORTAINER_DATA_PATH}:/data
