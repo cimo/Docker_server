@@ -8,8 +8,8 @@ services:
       - 127.0.0.1:${PORTAINER_PORT}:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${CERTIFICATE_PATH}:/certs
       - ${PORTAINER_DATA_PATH}:/data
-      - ${PORTAINER_SSL_PATH}:/certs
     networks:
       default:
         ipv4_address: ${PORTAINER_NETWORK_IP}
@@ -69,6 +69,7 @@ services:
         CERTIFICATE_FILE: ${CERTIFICATE_FILE}
         CERTIFICATE_KEY: ${CERTIFICATE_KEY}
         CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+        CERTIFICATE_PATH: ${CERTIFICATE_PATH}
         DOMAIN: ${DOMAIN}
         APACHE_VERSION: ${APACHE_VERSION}
         APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
@@ -76,7 +77,6 @@ services:
         APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
         PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
-        GITLAB_PORT: ${GITLAB_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -87,6 +87,7 @@ services:
       CERTIFICATE_FILE: ${CERTIFICATE_FILE}
       CERTIFICATE_KEY: ${CERTIFICATE_KEY}
       CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+      CERTIFICATE_PATH: ${CERTIFICATE_PATH}
       DOMAIN: ${DOMAIN}
       APACHE_VERSION: ${APACHE_VERSION}
       APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
@@ -94,7 +95,6 @@ services:
       APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
       PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
-      GITLAB_PORT: ${GITLAB_PORT}
     ports:
       - ${APACHE_PORT_HTTP}:80
       - ${APACHE_PORT_HTTPS}:443
@@ -190,6 +190,7 @@ services:
         CERTIFICATE_FILE: ${CERTIFICATE_FILE}
         CERTIFICATE_KEY: ${CERTIFICATE_KEY}
         CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+        CERTIFICATE_PATH: ${CERTIFICATE_PATH}
         NODEJS_VERSION: ${NODEJS_VERSION}
         NODEJS_ENV: ${NODEJS_ENV}
         NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
@@ -203,6 +204,7 @@ services:
       CERTIFICATE_FILE: ${CERTIFICATE_FILE}
       CERTIFICATE_KEY: ${CERTIFICATE_KEY}
       CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+      CERTIFICATE_PATH: ${CERTIFICATE_PATH}
       NODEJS_VERSION: ${NODEJS_VERSION}
       NODEJS_ENV: ${NODEJS_ENV}
       NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
@@ -217,27 +219,28 @@ services:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
   gitlab_container:
-    container_name: gitlab
-    image: gitlab/gitlab-ce:13.1.4-ce.0
-    hostname: "gitlab.${DOMAIN}"
+    container_name: Gitlab_${GITLAB_VERSION}
+    image: gitlab/gitlab-ce:${GITLAB_VERSION}
+    #hostname: "gitlab.${DOMAIN}"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.${DOMAIN}'
+        external_url 'https://gitlab.${DOMAIN}:${GITLAB_PORT_HTTPS}'
         git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
         gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_shell_ssh_port'] = 7722
-        nginx['redirect_http_to_https'] = false
-        nginx['redirect_http_to_https_port'] = 7780
-        nginx['ssl_certificate'] = '/etc/gitlab/ssl/gitlab.${DOMAIN}.crt'
-        nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/gitlab.${DOMAIN}.key'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
+        unicorn['worker_timeout'] = 60
+        unicorn['worker_processes'] = 3
+        nginx['listen_port'] = 443
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = "/opt/gitlab/embedded/ssl/certs/${CERTIFICATE_FILE}"
+        nginx['ssl_certificate_key'] = "/opt/gitlab/embedded/ssl/certs/${CERTIFICATE_KEY}"
+        letsencrypt['enable'] = false
     ports:
-      - "7780:80"
-      - "7443:443"
-      - "7722:22"
+      - ${GITLAB_PORT_HTTP}:80
+      - ${GITLAB_PORT_HTTPS}:443
+      - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
-      - /srv/gitlab/config:/etc/gitlab
-      - /srv/gitlab/logs:/var/log/gitlab
-      - /srv/gitlab/data:/var/opt/gitlab
+      - ${CERTIFICATE_PATH}:/opt/gitlab/embedded/ssl/certs/
       - ${GITLAB_DATA_PATH}:/var/opt/gitlab/git-data
     networks:
       default:
