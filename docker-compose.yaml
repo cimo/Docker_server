@@ -232,15 +232,15 @@ services:
         unicorn['worker_processes'] = 3
         nginx['listen_port'] = 443
         nginx['redirect_http_to_https'] = true
-        nginx['ssl_certificate'] = "/opt/gitlab/embedded/ssl/certs/${CERTIFICATE_FILE}"
-        nginx['ssl_certificate_key'] = "/opt/gitlab/embedded/ssl/certs/${CERTIFICATE_KEY}"
+        nginx['ssl_certificate'] = "/etc/certificates/${CERTIFICATE_FILE}"
+        nginx['ssl_certificate_key'] = "/etc/certificates/${CERTIFICATE_KEY}"
         letsencrypt['enable'] = false
     ports:
       - ${GITLAB_PORT_HTTP}:80
       - ${GITLAB_PORT_HTTPS}:443
       - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
-      - ${CERTIFICATE_PATH}:/opt/gitlab/embedded/ssl/certs
+      - ${CERTIFICATE_PATH}:/etc/certificates
       - ${GITLAB_DATA_PATH}:/var/opt/gitlab/git-data
     networks:
       default:
