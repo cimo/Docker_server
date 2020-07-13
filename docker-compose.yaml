@@ -77,6 +77,9 @@ services:
         APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
         PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
+        PORTAINER_PORT: ${PORTAINER_PORT}
+        GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
+        GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -95,6 +98,9 @@ services:
       APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
       PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
+      PORTAINER_PORT: ${PORTAINER_PORT}
+      GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
+      GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
     ports:
       - ${APACHE_PORT_HTTP}:80
       - ${APACHE_PORT_HTTPS}:443
@@ -221,23 +227,22 @@ services:
   gitlab_container:
     container_name: Gitlab_${GITLAB_VERSION}
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
-    hostname: "gitlab.${DOMAIN}"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.${DOMAIN}'
+        external_url 'https://127.0.0.1:${GITLAB_PORT_HTTPS}'
         git_data_dirs({'default' => {'path' => '/var/opt/gitlab/git-data'}})
         gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_shell_ssh_port'] = 443
+        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
         unicorn['worker_timeout'] = 60
         unicorn['worker_processes'] = 3
-        nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
+        nginx['listen_port'] = 443
         nginx['redirect_http_to_https'] = true
         nginx['ssl_certificate'] = "/etc/certificate/${CERTIFICATE_FILE}"
         nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
         letsencrypt['enable'] = false
     ports:
-      - ${GITLAB_PORT_HTTP}:80
-      - ${GITLAB_PORT_HTTPS}:443
+      - 127.0.0.1:${GITLAB_PORT_HTTP}:80
+      - 127.0.0.1:${GITLAB_PORT_HTTPS}:443
       - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
       - ${CERTIFICATE_PATH}:/etc/certificate
