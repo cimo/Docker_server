@@ -235,7 +235,7 @@ services:
         gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
         unicorn['worker_timeout'] = 60
         unicorn['worker_processes'] = 3
-        nginx['listen_port'] = 443
+        nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
         nginx['redirect_http_to_https'] = true
         nginx['ssl_certificate'] = "/etc/certificate/${CERTIFICATE_FILE}"
         nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
