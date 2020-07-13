@@ -222,16 +222,17 @@ services:
     hostname: "gitlab.${DOMAIN}"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.${DOMAIN}:7443'
+        external_url 'https://gitlab.${DOMAIN}'
         git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
         gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_shell_ssh_port'] = 7722
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
         nginx['redirect_http_to_https'] = true
-        nginx['redirect_http_to_https_port'] = 7780
+        nginx['ssl_certificate'] = '/etc/gitlab/ssl/gitlab.${DOMAIN}.crt'
+        nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/gitlab.${DOMAIN}.key'
     ports:
-      - "7780:80"
-      - "7443:443"
-      - "7722:22"
+      - "80:80"
+      - "443:443"
+      - "2222:22"
     volumes:
       - /srv/gitlab/config:/etc/gitlab
       - /srv/gitlab/logs:/var/log/gitlab
