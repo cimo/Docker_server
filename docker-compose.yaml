@@ -226,6 +226,7 @@ services:
         git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_shell_ssh_port'] = 7722
+        nginx['redirect_http_to_https'] = true
     ports:
       - "7780:80"
       - "7443:443"
@@ -234,6 +235,7 @@ services:
       - /srv/gitlab/config:/etc/gitlab
       - /srv/gitlab/logs:/var/log/gitlab
       - /srv/gitlab/data:/var/opt/gitlab
+      - ${GITLAB_DATA_PATH}:/var/opt/gitlab/git-data
     networks:
       default:
         ipv4_address: ${GITLAB_NETWORK_IP}
