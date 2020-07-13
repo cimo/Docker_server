@@ -221,13 +221,13 @@ services:
   gitlab_container:
     container_name: Gitlab_${GITLAB_VERSION}
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
-    #hostname: "gitlab.${DOMAIN}"
+    hostname: "gitlab.${DOMAIN}"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.${DOMAIN}'
-        git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
+        git_data_dirs({'default' => {'path' => '/var/opt/gitlab/git-data'}})
         gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
+        gitlab_rails['gitlab_shell_ssh_port'] = 443
         unicorn['worker_timeout'] = 60
         unicorn['worker_processes'] = 3
         nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
