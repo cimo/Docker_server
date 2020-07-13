@@ -227,9 +227,9 @@ services:
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_shell_ssh_port'] = 7722
     ports:
-      - 7780:80
-      - 7443:443
-      - 7722:22
+      - "7780:80"
+      - "7443:443"
+      - "7722:22"
     volumes:
       - /srv/gitlab/config:/etc/gitlab
       - /srv/gitlab/logs:/var/log/gitlab
