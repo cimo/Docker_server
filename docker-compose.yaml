@@ -246,7 +246,9 @@ services:
       - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
       - ${CERTIFICATE_PATH}:/etc/certificate
-      - ${GITLAB_DATA_PATH}:/var/opt/gitlab/git-data
+      - ${GITLAB_DATA_PATH}/log:/var/log/gitlab
+      - ${GITLAB_DATA_PATH}/data:/etc/gitlab
+      - ${GITLAB_DATA_PATH}/opt:/var/opt/gitlab
     networks:
       default:
         ipv4_address: ${GITLAB_NETWORK_IP}
