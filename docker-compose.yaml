@@ -224,23 +224,23 @@ services:
     #hostname: "gitlab.${DOMAIN}"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.${DOMAIN}:${GITLAB_PORT_HTTPS}'
+        external_url 'https://gitlab.${DOMAIN}'
         git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
         unicorn['worker_timeout'] = 60
         unicorn['worker_processes'] = 3
-        nginx['listen_port'] = 443
+        nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
         nginx['redirect_http_to_https'] = true
-        nginx['ssl_certificate'] = "/etc/certificates/${CERTIFICATE_FILE}"
-        nginx['ssl_certificate_key'] = "/etc/certificates/${CERTIFICATE_KEY}"
+        nginx['ssl_certificate'] = "/etc/certificate/${CERTIFICATE_FILE}"
+        nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
         letsencrypt['enable'] = false
     ports:
       - ${GITLAB_PORT_HTTP}:80
       - ${GITLAB_PORT_HTTPS}:443
       - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
-      - ${CERTIFICATE_PATH}:/etc/certificates
+      - ${CERTIFICATE_PATH}:/etc/certificate
       - ${GITLAB_DATA_PATH}:/var/opt/gitlab/git-data
     networks:
       default:
