@@ -74,11 +74,9 @@ services:
         APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
         APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
         APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-        APACHE_GITLAB_PORT: ${APACHE_GITLAB_PORT}
-        APACHE_GITLAB_PORT_UNICORN: ${APACHE_GITLAB_PORT_UNICORN}
-        APACHE_GITLAB_DATA_PATH: ${APACHE_GITLAB_DATA_PATH}
         PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
+        GITLAB_PORT: ${GITLAB_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -94,20 +92,15 @@ services:
       APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
       APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
       APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-      APACHE_GITLAB_PORT: ${APACHE_GITLAB_PORT}
-      APACHE_GITLAB_PORT_UNICORN: ${APACHE_GITLAB_PORT_UNICORN}
-      APACHE_GITLAB_DATA_PATH: ${APACHE_GITLAB_DATA_PATH}
       PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
+      GITLAB_PORT: ${GITLAB_PORT}
     ports:
       - ${APACHE_PORT_HTTP}:80
       - ${APACHE_PORT_HTTPS}:443
-      - 127.0.0.1:${APACHE_GITLAB_PORT}:${APACHE_GITLAB_PORT}
-      - 127.0.0.1:${APACHE_GITLAB_PORT_UNICORN}:${APACHE_GITLAB_PORT_UNICORN}
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
       - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
-      - ${APACHE_GITLAB_DATA_PATH}:${APACHE_GITLAB_DATA_PATH}
     networks:
       default:
         ipv4_address: ${APACHE_NETWORK_IP}
@@ -223,6 +216,27 @@ services:
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
+    gitlab_container:
+      container_name: gitlab
+      image: gitlab/gitlab-ce:13.1.4-ce.0
+      hostname: "gitlab.${DOMAIN}"
+      environment:
+        GITLAB_OMNIBUS_CONFIG: |
+          external_url 'https://gitlab.${DOMAIN}:7443'
+          git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
+          gitlab_rails['lfs_enabled'] = true
+          gitlab_rails['gitlab_shell_ssh_port'] = 7722
+      ports:
+        - 7780:80
+        - 7443:443
+        - 7722:22
+      volumes:
+        - /srv/gitlab/config:/etc/gitlab
+        - /srv/gitlab/logs:/var/log/gitlab
+        - /srv/gitlab/data:/var/opt/gitlab
+      networks:
+        default:
+          ipv4_address: ${GITLAB_NETWORK_IP}
 networks:
   default:
     driver: ${NETWORK_DRIVER}
