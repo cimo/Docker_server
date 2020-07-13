@@ -227,6 +227,7 @@ services:
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_shell_ssh_port'] = 7722
         nginx['redirect_http_to_https'] = true
+        nginx['redirect_http_to_https_port'] = 7780
     ports:
       - "7780:80"
       - "7443:443"
