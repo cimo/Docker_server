@@ -216,27 +216,27 @@ services:
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
-    gitlab_container:
-      container_name: gitlab
-      image: gitlab/gitlab-ce:13.1.4-ce.0
-      hostname: "gitlab.${DOMAIN}"
-      environment:
-        GITLAB_OMNIBUS_CONFIG: |
-          external_url 'https://gitlab.${DOMAIN}:7443'
-          git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
-          gitlab_rails['lfs_enabled'] = true
-          gitlab_rails['gitlab_shell_ssh_port'] = 7722
-      ports:
-        - 7780:80
-        - 7443:443
-        - 7722:22
-      volumes:
-        - /srv/gitlab/config:/etc/gitlab
-        - /srv/gitlab/logs:/var/log/gitlab
-        - /srv/gitlab/data:/var/opt/gitlab
-      networks:
-        default:
-          ipv4_address: ${GITLAB_NETWORK_IP}
+  gitlab_container:
+    container_name: gitlab
+    image: gitlab/gitlab-ce:13.1.4-ce.0
+    hostname: "gitlab.${DOMAIN}"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.${DOMAIN}:7443'
+        git_data_dirs({'default' => {'path' => '${GITLAB_DATA_PATH}'}})
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_shell_ssh_port'] = 7722
+    ports:
+      - 7780:80
+      - 7443:443
+      - 7722:22
+    volumes:
+      - /srv/gitlab/config:/etc/gitlab
+      - /srv/gitlab/logs:/var/log/gitlab
+      - /srv/gitlab/data:/var/opt/gitlab
+    networks:
+      default:
+        ipv4_address: ${GITLAB_NETWORK_IP}
 networks:
   default:
     driver: ${NETWORK_DRIVER}
