@@ -16,6 +16,8 @@ ARG MYSQL_PASSWORD
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
+COPY ${PATH_ROOT}/mysql_override.cnf /etc/mysql/conf.d/override.cnf
+
 # System
 RUN cd ~ \
 && apt-get update && apt-get install -y \
