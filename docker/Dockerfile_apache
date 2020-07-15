@@ -30,6 +30,7 @@ COPY ${PATH_ROOT}/httpd.conf ${APACHE_PATH_ROOT}/conf/httpd.conf
 # System
 RUN cd ~ \
 && apt-get update && apt-get install -y \
+software-properties-common \
 sudo \
 nano \
 tzdata \

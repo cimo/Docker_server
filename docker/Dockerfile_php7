@@ -27,6 +27,7 @@ RUN cd ~ \
 && chmod +x /usr/local/bin/entrypoint.sh \
 && cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
 && apt-get update && apt-get install -y \
+software-properties-common \
 sudo \
 nano \
 tzdata \
