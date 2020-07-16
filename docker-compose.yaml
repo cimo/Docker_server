@@ -3,7 +3,8 @@ services:
   portainer_container:
     container_name: portainer
     image: portainer/portainer
-    command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    command:
+      --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     ports:
       - 127.0.0.1:${PORTAINER_PORT}:9000
     volumes:
@@ -28,10 +29,10 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         PHP7_VERSION: ${PHP7_VERSION}
-        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-        PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
         PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
+        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+        PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
     environment:
       USER_NAME: ${USER_NAME}
       USER_PASSWORD: ${USER_PASSWORD}
@@ -42,10 +43,10 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       PHP7_VERSION: ${PHP7_VERSION}
-      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-      PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
       PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
+      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+      PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
     ports:
       - 127.0.0.1:${PHP7_PORT_FPM}:${PHP7_PORT_FPM}
       - ${PHP7_PORT_XDEBUG}:${PHP7_PORT_XDEBUG}
@@ -71,13 +72,14 @@ services:
         CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
         CERTIFICATE_PATH: ${CERTIFICATE_PATH}
         DOMAIN: ${DOMAIN}
+        PORTAINER_PORT: ${PORTAINER_PORT}
         APACHE_VERSION: ${APACHE_VERSION}
+        APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
         APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
         APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
-        APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
         PHP7_VH_NAME: ${PHP7_VH_NAME}
-        PORTAINER_PORT: ${PORTAINER_PORT}
+        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+        NEXTCLOUD_PORT_HTTP: ${NEXTCLOUD_PORT_HTTP}
         GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
         GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
     environment:
@@ -92,13 +94,14 @@ services:
       CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
       CERTIFICATE_PATH: ${CERTIFICATE_PATH}
       DOMAIN: ${DOMAIN}
+      PORTAINER_PORT: ${PORTAINER_PORT}
       APACHE_VERSION: ${APACHE_VERSION}
+      APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
       APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
       APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
-      APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
       PHP7_VH_NAME: ${PHP7_VH_NAME}
-      PORTAINER_PORT: ${PORTAINER_PORT}
+      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
+      NEXTCLOUD_PORT_HTTP: ${NEXTCLOUD_PORT_HTTP}
       GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
       GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
     ports:
@@ -123,10 +126,10 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         MYSQL_VERSION: ${MYSQL_VERSION}
-        MYSQL_PORT: ${MYSQL_PORT}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_PORT: ${MYSQL_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -135,10 +138,10 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       MYSQL_VERSION: ${MYSQL_VERSION}
-      MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
     ports:
       - 127.0.0.1:${MYSQL_PORT}:3306
     volumes:
@@ -160,9 +163,9 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         POSTGRES_VERSION: ${POSTGRES_VERSION}
-        POSTGRES_PORT: ${POSTGRES_PORT}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_PORT: ${POSTGRES_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -171,9 +174,9 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       POSTGRES_VERSION: ${POSTGRES_VERSION}
-      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
     ports:
       - 127.0.0.1:${POSTGRES_PORT}:5432
     volumes:
@@ -198,9 +201,9 @@ services:
         CERTIFICATE_PATH: ${CERTIFICATE_PATH}
         NODEJS_VERSION: ${NODEJS_VERSION}
         NODEJS_ENV: ${NODEJS_ENV}
+        NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
         NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
         NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-        NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WEB_PATH: ${WEB_PATH}
@@ -212,9 +215,9 @@ services:
       CERTIFICATE_PATH: ${CERTIFICATE_PATH}
       NODEJS_VERSION: ${NODEJS_VERSION}
       NODEJS_ENV: ${NODEJS_ENV}
+      NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
       NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
       NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-      NODEJS_DIGEST_ENABLE: ${NODEJS_DIGEST_ENABLE}
     ports:
       - 127.0.0.1:${NODEJS_PORT_HTTP}:${NODEJS_PORT_HTTP}
       - 127.0.0.1:${NODEJS_PORT_HTTPS}:${NODEJS_PORT_HTTPS}
@@ -223,6 +226,24 @@ services:
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
+  nextcloud_container:
+    container_name: Nextcloud_${NEXTCLOUD_VERSION}
+    image: nextcloud:${NEXTCLOUD_VERSION}
+    environment:
+      NEXTCLOUD_TRUSTED_DOMAINS: ${NEXTCLOUD_TRUSTED_DOMAINS}
+      NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
+      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+      POSTGRES_HOST: ${NEXTCLOUD_DB_HOST}
+      POSTGRES_DB: ${NEXTCLOUD_DB_NAME}
+      POSTGRES_USER: ${NEXTCLOUD_DB_USER}
+      POSTGRES_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+    ports:
+      - ${NEXTCLOUD_PORT_HTTP}:80
+    volumes:
+      - ${NEXTCLOUD_DATA_PATH}:/var/www/html
+    networks:
+      default:
+        ipv4_address: ${NEXTCLOUD_NETWORK_IP}  
   gitlab_container:
     container_name: Gitlab_${GITLAB_VERSION}
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
@@ -240,9 +261,9 @@ services:
         nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
         letsencrypt['enable'] = false
     ports:
+      - 127.0.0.1:${GITLAB_PORT_SSH}:22
       - 127.0.0.1:${GITLAB_PORT_HTTP}:80
       - 127.0.0.1:${GITLAB_PORT_HTTPS}:443
-      - 127.0.0.1:${GITLAB_PORT_SSH}:22
     volumes:
       - ${CERTIFICATE_PATH}:/etc/certificate
       - ${GITLAB_DATA_PATH}/conf:/etc/gitlab
