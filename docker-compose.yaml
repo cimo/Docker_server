@@ -239,6 +239,8 @@ services:
       POSTGRES_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
     ports:
       - ${NEXTCLOUD_PORT_HTTP}:80
+    extra_hosts:
+      - nextcloud.${DOMAIN}:172.21.0.8
     volumes:
       - ${NEXTCLOUD_DATA_PATH}:/var/www/html
     networks:
