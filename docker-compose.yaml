@@ -230,7 +230,9 @@ services:
     container_name: Nextcloud_${NEXTCLOUD_VERSION}
     image: nextcloud:${NEXTCLOUD_VERSION}
     environment:
-      NEXTCLOUD_TRUSTED_DOMAINS: nextcloud.${DOMAIN}
+      APACHE_DISABLE_REWRITE_IP: 1
+      TRUSTED_PROXIES: ${APACHE_NETWORK_IP}
+      OVERWRITEPROTOCOL: https
       NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
       NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
       POSTGRES_HOST: ${NEXTCLOUD_DB_HOST}
@@ -238,14 +240,12 @@ services:
       POSTGRES_USER: ${NEXTCLOUD_DB_USER}
       POSTGRES_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
     ports:
-      - ${NEXTCLOUD_PORT_HTTP}:80
-    extra_hosts:
-      - nextcloud.${DOMAIN}:172.21.0.8
+      - 127.0.0.1:${NEXTCLOUD_PORT_HTTP}:80
     volumes:
       - ${NEXTCLOUD_DATA_PATH}:/var/www/html
     networks:
       default:
-        ipv4_address: ${NEXTCLOUD_NETWORK_IP}  
+        ipv4_address: ${NEXTCLOUD_NETWORK_IP}
   gitlab_container:
     container_name: Gitlab_${GITLAB_VERSION}
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
