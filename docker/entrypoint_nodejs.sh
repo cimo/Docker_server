@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-# Server
 cd /home/${WWW_USER_NAME}/root/nodejs
 npm cache clear --force
 npm install

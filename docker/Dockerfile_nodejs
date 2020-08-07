@@ -38,8 +38,6 @@ wget \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
-# Npm
-&& npm install -g pm2 \
 # Selenium
 && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add \
 && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
