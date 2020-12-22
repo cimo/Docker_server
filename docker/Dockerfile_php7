@@ -12,7 +12,6 @@ ARG PATH_ROOT
 ARG TIMEZONE
 ARG PHP7_PATH_ROOT
 ARG PHP7_VH_NAME
-ARG PHP7_PORT_SSH
 ARG PHP7_PORT_FPM
 ARG PHP7_KEY_XDEBUG
 ARG PHP7_HOST_XDEBUG
@@ -21,7 +20,6 @@ ARG PHP7_PORT_XDEBUG
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
-COPY ${PATH_ROOT}/sshd_config /etc/ssh/sshd_config
 COPY ${PATH_ROOT}/key/id_rsa /tmp/key/id_rsa
 COPY ${PATH_ROOT}/key/authorized_keys /tmp/key/authorized_keys
 COPY ${PATH_ROOT}/zz-docker_php7.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
@@ -30,7 +28,6 @@ COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
 
 # System
 RUN cd ~ \
-&& mkdir -p /var/run/sshd \
 && chmod +x /usr/local/bin/entrypoint.sh \
 && cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
 && apt-get update && apt-get install -y \
@@ -40,19 +37,16 @@ nano \
 tzdata \
 curl \
 make \
-git \
 zip \
 unzip \
 cron \
 wget \
-openssh-server \
 re2c \
 file \
 libfreetype6-dev \
 libjpeg-dev \
 libpng-dev \
 libssl-dev \
-libssh2-1-dev \
 libicu-dev \
 libzip-dev \
 zlib1g-dev \
@@ -72,13 +66,6 @@ zlib1g-dev \
 # User sudo
 && useradd --home /home/${USER_NAME} -g sudo -G ${WEB_USER_GROUP} --shell /bin/bash -m ${USER_NAME} \
 && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd \
-&& mkdir /home/${USER_NAME}/.ssh \
-&& cp /tmp/key/id_rsa /home/${USER_NAME}/.ssh/id_rsa \
-&& cp /tmp/key/authorized_keys /home/${USER_NAME}/.ssh/authorized_keys \
-&& chmod 700 /home/${USER_NAME}/.ssh \
-&& chmod 600 /home/${USER_NAME}/.ssh/id_rsa \
-&& chmod 600 /home/${USER_NAME}/.ssh/authorized_keys \
-&& chown -R ${USER_NAME}:sudo /home/${USER_NAME}/.ssh \
 && echo "${USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
 # User www
 && useradd --home /home/${WWW_USER_NAME} -g ${WEB_USER_GROUP} -G sftp --shell /bin/false -m ${WWW_USER_NAME} \
@@ -86,18 +73,10 @@ zlib1g-dev \
 && chown root:root /home/${WWW_USER_NAME} \
 && mkdir /home/${WWW_USER_NAME}/root \
 && chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root \
-&& mkdir /home/${WWW_USER_NAME}/.ssh \
-&& cp /tmp/key/id_rsa /home/${WWW_USER_NAME}/.ssh/id_rsa \
-&& cp /tmp/key/authorized_keys /home/${WWW_USER_NAME}/.ssh/authorized_keys \
-&& chmod 700 /home/${WWW_USER_NAME}/.ssh \
-&& chmod 600 /home/${WWW_USER_NAME}/.ssh/id_rsa \
-&& chmod 600 /home/${WWW_USER_NAME}/.ssh/authorized_keys \
-&& chown -R ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/.ssh \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
 && pear config-set php_bin /usr/local/bin \
-&& echo "\n" | pecl install ssh2-1.2 \
 && echo "\n" | pecl install apcu-5.1.18 \
 && echo "\n" | pecl install xdebug-2.9.6 \
 && echo "\n" | pecl install imagick-3.4.4 \
@@ -117,4 +96,4 @@ zlib1g-dev \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-EXPOSE ${PHP7_PORT_SSH} ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}
+EXPOSE ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}

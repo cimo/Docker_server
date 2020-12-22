@@ -23,7 +23,6 @@ nano \
 tzdata \
 curl \
 make \
-git \
 zip \
 unzip \
 cron \
