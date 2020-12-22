@@ -9,12 +9,14 @@ ARG TIMEZONE
 ARG CERTIFICATE_FILE
 ARG CERTIFICATE_KEY
 ARG CERTIFICATE_CHAIN
-ARG CERTIFICATE_PATH
 ARG NODEJS_ENV
 ARG NODEJS_DIGEST_ENABLE
 ARG NODEJS_PORT_HTTP
 ARG NODEJS_PORT_HTTPS
+ARG NODEJS_PORT_VUE
+ARG NODEJS_PORT_VUE_APP
 
+ENV NODE_ENV=${NODEJS_ENV}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
@@ -35,9 +37,17 @@ zip \
 unzip \
 cron \
 wget \
+# Docker
+&& wget -q https://download.docker.com/linux/static/stable/x86_64/docker-19.03.9.tgz \
+&& tar -xzvf docker-19.03.9.tgz -C /tmp \
+&& mv /tmp/docker/docker /usr/bin \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
+# Npm
+&& npm install -g @vue/cli \
+&& npm install -g terser \
+&& npm install -g sass \
 # Selenium
 && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add \
 && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
@@ -47,6 +57,8 @@ wget \
 && npm install -g chromedriver --unsafe-perm=true --allow-root \
 && npm install -g geckodriver --unsafe-perm=true --allow-root \
 # Clean
+&& rm docker-19.03.9.tgz \
+&& rm -rf /tmp/docker \
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean -y \
 && apt-get autoclean -y \
@@ -54,4 +66,4 @@ wget \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-EXPOSE ${NODEJS_PORT_HTTP} ${NODEJS_PORT_HTTPS}
+EXPOSE ${NODEJS_PORT_HTTP} ${NODEJS_PORT_HTTPS} ${NODEJS_PORT_VUE} ${NODEJS_PORT_VUE_APP}

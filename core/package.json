@@ -1,8 +1,8 @@
 {
-    "name": "OneWorkspace_nodejs_server",
+    "name": "One_workspace",
     "version": "1.0.0",
     "author": "cimo",
-    "description": "One workspace - NodeJs server",
+    "description": "One workspace",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -12,9 +12,11 @@
         "express": "4.17.1",
         "body-parser": "1.19.0",
         "cookie-parser": "1.4.5",
-        "csurf": "1.11.0",
         "http-auth": "4.1.2",
-        "socket.io": "2.3.0"
+        "cors": "2.8.5",
+        "csurf": "1.11.0",
+        "socket.io": "3.0.3",
+        "node-pty": "0.9.0"
     },
     "peerDependencies": {}
 }

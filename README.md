@@ -13,7 +13,10 @@ Web server with docker container.
 | Apache 2.4 |
 | MySql 5.7 |
 | PostgreSql 10.13 |
-| NodeJs 12.17.10 |
+| NodeJs 12.18.1 |
+| Redis 6.0.9 |
+| MongoDb 4.4.1 |
+| Portainer |
 | Nextcloud 19.0.1RC1 |
 | Gitlab 13.1.4-ce.0 |
 

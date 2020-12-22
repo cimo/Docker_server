@@ -12,18 +12,25 @@ ARG PATH_ROOT
 ARG TIMEZONE
 ARG PHP7_PATH_ROOT
 ARG PHP7_VH_NAME
+ARG PHP7_PORT_SSH
 ARG PHP7_PORT_FPM
+ARG PHP7_KEY_XDEBUG
+ARG PHP7_HOST_XDEBUG
 ARG PHP7_PORT_XDEBUG
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
+COPY ${PATH_ROOT}/sshd_config /etc/ssh/sshd_config
+COPY ${PATH_ROOT}/key/id_rsa /tmp/key/id_rsa
+COPY ${PATH_ROOT}/key/authorized_keys /tmp/key/authorized_keys
 COPY ${PATH_ROOT}/zz-docker_php7.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
-COPY ${PATH_ROOT}/php_override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
+COPY ${PATH_ROOT}/php7_override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
 COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
 
 # System
 RUN cd ~ \
+&& mkdir -p /var/run/sshd \
 && chmod +x /usr/local/bin/entrypoint.sh \
 && cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
 && apt-get update && apt-get install -y \
@@ -38,6 +45,7 @@ zip \
 unzip \
 cron \
 wget \
+openssh-server \
 re2c \
 file \
 libfreetype6-dev \
@@ -56,18 +64,35 @@ libmhash-dev \
 libmcrypt-dev \
 libmemcached-dev \
 zlib1g-dev \
+# Group
+&& addgroup sftp \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
 # User sudo
 && useradd --home /home/${USER_NAME} -g sudo -G ${WEB_USER_GROUP} --shell /bin/bash -m ${USER_NAME} \
 && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd \
+&& mkdir /home/${USER_NAME}/.ssh \
+&& cp /tmp/key/id_rsa /home/${USER_NAME}/.ssh/id_rsa \
+&& cp /tmp/key/authorized_keys /home/${USER_NAME}/.ssh/authorized_keys \
+&& chmod 700 /home/${USER_NAME}/.ssh \
+&& chmod 600 /home/${USER_NAME}/.ssh/id_rsa \
+&& chmod 600 /home/${USER_NAME}/.ssh/authorized_keys \
+&& chown -R ${USER_NAME}:sudo /home/${USER_NAME}/.ssh \
+&& echo "${USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
 # User www
-&& useradd --home /home/${WWW_USER_NAME} -g ${WEB_USER_GROUP} --shell /bin/false -m ${WWW_USER_NAME} \
+&& useradd --home /home/${WWW_USER_NAME} -g ${WEB_USER_GROUP} -G sftp --shell /bin/false -m ${WWW_USER_NAME} \
 && echo "${WWW_USER_NAME}:${WWW_USER_PASSWORD}" | chpasswd \
 && chown root:root /home/${WWW_USER_NAME} \
 && mkdir /home/${WWW_USER_NAME}/root \
 && chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root \
+&& mkdir /home/${WWW_USER_NAME}/.ssh \
+&& cp /tmp/key/id_rsa /home/${WWW_USER_NAME}/.ssh/id_rsa \
+&& cp /tmp/key/authorized_keys /home/${WWW_USER_NAME}/.ssh/authorized_keys \
+&& chmod 700 /home/${WWW_USER_NAME}/.ssh \
+&& chmod 600 /home/${WWW_USER_NAME}/.ssh/id_rsa \
+&& chmod 600 /home/${WWW_USER_NAME}/.ssh/authorized_keys \
+&& chown -R ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/.ssh \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
 && pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
@@ -79,40 +104,17 @@ zlib1g-dev \
 && echo "\n" | pecl install memcached-3.1.5 \
 && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
 && docker-php-ext-configure gmp \
-&& docker-php-ext-install gd \
-&& docker-php-ext-install intl \
-&& docker-php-ext-install opcache \
-&& docker-php-ext-install zip \
-&& docker-php-ext-install pdo_mysql \
-&& docker-php-ext-install pdo_pgsql \
-&& docker-php-ext-install bcmath \
-&& docker-php-ext-install gmp \
-# Ini file setting
-&& echo "\n\n \
-opcache.enable=1 \n \
-opcache.memory_consumption=256 \n \
-opcache.max_accelerated_files=20000 \n \
-opcache.revalidate_freq=0 \n \
-opcache.validate_timestamps=0 \n \
-opcache.interned_strings_buffer=16 \n \
-opcache.fast_shutdown=1" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
-&& echo "\n \
-xdebug.remote_enable=on \n \
-xdebug.remote_handler=dbgp \n \
-xdebug.remote_mode=req \n \
-xdebug.remote_host=127.0.0.1 \n \
-xdebug.remote_port=${PHP7_PORT_XDEBUG} \n \
-xdebug.remote_log=/tmp/xdebug.log \n \
-xdebug.max_nesting_level=1000" >> ${PHP7_PATH_ROOT}/php/conf.d/override.ini \
+&& docker-php-ext-install gd intl opcache zip pdo pdo_mysql pdo_pgsql bcmath gmp \
 # Composer
 && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 # Clean
 && pecl clear-cache \
 && rm -rf /var/lib/apt/lists/* \
+&& rm -rf /tmp/key \
 && apt-get clean -y \
 && apt-get autoclean -y \
 && apt-get autoremove -y
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-EXPOSE ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}
+EXPOSE ${PHP7_PORT_SSH} ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}
