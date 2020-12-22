@@ -21,12 +21,12 @@ Web server with docker container.
 | Gitlab 13.1.4-ce.0 |
 
 ## Server:
-1) Copy file on your server (for example /home/cimo/docker_server).
+1) Copy file on your server (for example /home/cimo/docker_server/root).
 
 2) Write on terminal:
 
         sudo chown -R cimo:sudo /home/cimo/docker_server
-        cd /home/cimo/docker_server
+        cd /home/cimo/docker_server/root
         sudo cp .env.dist .env
         sudo nano .env
 
@@ -38,10 +38,10 @@ Web server with docker container.
 
 5) Write on terminal:
 
-        sudo chmod 775 /home/cimo/docker_server/web_space
-        sudo find /home/cimo/docker_server/web_space -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
-        sudo find /home/cimo/docker_server/web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
-        sudo find /home/cimo/docker_server/web_space -name "*.sh" -exec chmod 774 {} \;
+        sudo chmod 775 /home/cimo/docker_server/root/web_space
+        sudo find /home/cimo/docker_server/root/web_space -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
+        sudo find /home/cimo/docker_server/root/web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
+        sudo find /home/cimo/docker_server/root/web_space -name "*.sh" -exec chmod 774 {} \;
 
 6) Add in your hosts file:
 
