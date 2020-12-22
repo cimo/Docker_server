@@ -20,8 +20,6 @@ ARG PHP7_PORT_XDEBUG
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
-COPY ${PATH_ROOT}/key/id_rsa /tmp/key/id_rsa
-COPY ${PATH_ROOT}/key/authorized_keys /tmp/key/authorized_keys
 COPY ${PATH_ROOT}/zz-docker_php7.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
 COPY ${PATH_ROOT}/php7_override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
 COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
@@ -89,7 +87,6 @@ zlib1g-dev \
 # Clean
 && pecl clear-cache \
 && rm -rf /var/lib/apt/lists/* \
-&& rm -rf /tmp/key \
 && apt-get clean -y \
 && apt-get autoclean -y \
 && apt-get autoremove -y
