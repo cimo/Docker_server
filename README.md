@@ -5,7 +5,7 @@ Web server with docker container.
 
 | Info: |
 |:---|
-| Cross platform (Windows docker, Linux docker, Mac docker) |
+| Cross platform (Windows, Linux, Mac) |
 
 | Conatiner: |
 |:---|
