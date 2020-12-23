@@ -57,7 +57,7 @@ Web server with docker container.
 
 9) Write on terminal:
    
-         sudo chmod -R 2770 /home/cimo/docker_server/data/gitlab/opt/git-data/repositories
+         sudo chmod -R 2770 /home/cimo/docker_server/data/gitlab
 
 10) For launch gitlab write on your browser "https://gitlab.your_domain".
 

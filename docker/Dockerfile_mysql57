@@ -38,4 +38,4 @@ wget \
 && apt-get autoclean -y \
 && apt-get autoremove -y
 
-EXPOSE ${MYSQL_PORT}
+EXPOSE ${MYSQL57_PORT}
