@@ -37,6 +37,9 @@ services:
       PHP7_KEY_XDEBUG: ${PHP7_KEY_XDEBUG}
       PHP7_HOST_XDEBUG: ${PHP7_HOST_XDEBUG}
       PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
+    ports:
+      - 127.0.0.1:${PHP7_PORT_FPM}:${PHP7_PORT_FPM}
+      - 127.0.0.1:${PHP7_PORT_XDEBUG}:${PHP7_PORT_XDEBUG}
     volumes:
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
     networks:
