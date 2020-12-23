@@ -49,6 +49,9 @@ Temporary Items
 # cimo +
 certificate/reinventsoftware.org
 core/node_modules
+virtual_host/reinventsoftware.org.conf
+virtual_host/ls1_reinventsoftware.org.conf
+virtual_host/stg_reinventsoftware.org.conf
 .env
 error.log
 debug.log
