@@ -17,7 +17,7 @@ Web server with docker container.
 | Redis 6.0.9 |
 | MongoDb 4.4.1 |
 | Portainer |
-| Nextcloud 19.0.1RC1 |
+| Nextcloud 20.0.4 |
 | Gitlab 13.1.4-ce.0 |
 
 ## Server:
@@ -55,7 +55,11 @@ Web server with docker container.
 
 ## Gitlab:
 
-9) For launch gitlab write on your browser "https://gitlab.your_domain".
+9) Write on terminal:
+   
+         sudo chmod -R 2770 /home/cimo/docker_server/data/gitlab/opt/git-data/repositories
+
+10) For launch gitlab write on your browser "https://gitlab.your_domain".
 
 <b>By CIMO - https://reinventsoftware.org</b>
 
