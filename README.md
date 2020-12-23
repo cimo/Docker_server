@@ -18,7 +18,7 @@ Web server with docker container.
 | MongoDb 4.4.1 |
 | Portainer |
 | Nextcloud 20.0.4 |
-| Gitlab 13.1.4-ce.0 |
+| Gitlab 13.7.0-ce.0 |
 
 ## Server:
 1) Copy file on your server (for example /home/cimo/docker_server/root).
