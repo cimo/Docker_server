@@ -49,8 +49,6 @@ Temporary Items
 # cimo +
 certificate/reinventsoftware.org
 core/node_modules
-virtual_host/custom/*
-!virtual_host/custom/.gitkeep
 .env
 error.log
 debug.log
