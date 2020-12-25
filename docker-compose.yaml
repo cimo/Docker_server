@@ -126,6 +126,7 @@ services:
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL57_VERSION: ${MYSQL57_VERSION}
         MYSQL57_PORT: ${MYSQL57_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
@@ -137,6 +138,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL57_VERSION: ${MYSQL57_VERSION}
       MYSQL57_PORT: ${MYSQL57_PORT}
     ports:
       - 127.0.0.1:${MYSQL57_PORT}:3306
@@ -246,6 +248,8 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         REDIS_VERSION: ${REDIS_VERSION}
+        REDIS_PASSWORD: ${REDIS_PASSWORD}
+        REDIS_PORT: ${REDIS_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
@@ -254,6 +258,8 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       REDIS_VERSION: ${REDIS_VERSION}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT}
     ports:
       - 127.0.0.1:${REDIS_PORT}:6379
     volumes:
@@ -279,8 +285,8 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         MONGODB_VERSION: ${MONGODB_VERSION}
-        MONGODB_USER: ${MONGODB_USER}
-        MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+        MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
         MONGODB_PORT: ${MONGODB_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
@@ -290,8 +296,8 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       MONGODB_VERSION: ${MONGODB_VERSION}
-      MONGODB_USER: ${MONGODB_USER}
-      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
       MONGODB_PORT: ${MONGODB_PORT}
     ports:
       - 127.0.0.1:${MONGODB_PORT}:27017
@@ -308,8 +314,7 @@ services:
   portainer_container:
     container_name: portainer
     image: portainer/portainer
-    command:
-      --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+    command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     ports:
       - 127.0.0.1:${PORTAINER_PORT}:9000
     volumes:

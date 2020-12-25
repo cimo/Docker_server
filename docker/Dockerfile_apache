@@ -26,7 +26,7 @@ ARG GITLAB_PORT_HTTPS
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
-COPY ${PATH_ROOT}/httpd.conf ${APACHE_PATH_ROOT}/conf/httpd.conf
+COPY ${PATH_ROOT}/apache.conf ${APACHE_PATH_ROOT}/conf/httpd.conf
 
 # System
 RUN cd ~ \

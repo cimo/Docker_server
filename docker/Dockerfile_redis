@@ -8,6 +8,8 @@ ARG WEB_USER_GROUP
 ARG WEB_PATH
 ARG PATH_ROOT
 ARG TIMEZONE
+ARG REDIS_PASSWORD
+ARG REDIS_PORT
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
@@ -35,5 +37,7 @@ wget \
 && apt-get clean -y \
 && apt-get autoclean -y \
 && apt-get autoremove -y
+
+CMD ["redis-server", "--requirepass ${REDIS_PASSWORD}"]
 
 EXPOSE ${REDIS_PORT}
