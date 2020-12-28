@@ -1,9 +1,15 @@
 #!/bin/bash
 set -e
 
-cd /home/${WWW_USER_NAME}/root/core
-npm cache clear --force
-npm install
+PATH_CORE="/home/${WWW_USER_NAME}/root/core"
+
+cd "${PATH_CORE}"
+
+if [ ! -d "${PATH_CORE}/node_modules" ]; then
+  npm cache clear --force
+  npm install
+fi
+
 node Server.js
 
 tail -f /dev/null

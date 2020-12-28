@@ -38,6 +38,6 @@ wget \
 && apt-get autoclean -y \
 && apt-get autoremove -y
 
-CMD ["redis-server", "--requirepass ${REDIS_PASSWORD}"]
+CMD ["sh", "-c", "redis-server --requirepass ${REDIS_PASSWORD}"]
 
 EXPOSE ${REDIS_PORT}

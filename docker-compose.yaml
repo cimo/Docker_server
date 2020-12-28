@@ -285,8 +285,11 @@ services:
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
         MONGODB_VERSION: ${MONGODB_VERSION}
-        MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
-        MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+        MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+        MONGODB_DATABASE: ${MONGODB_DATABASE}
+        MONGODB_USER: ${MONGODB_USER}
+        MONGODB_PASSWORD: ${MONGODB_PASSWORD}
         MONGODB_PORT: ${MONGODB_PORT}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
@@ -296,8 +299,11 @@ services:
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
       MONGODB_VERSION: ${MONGODB_VERSION}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
       MONGODB_PORT: ${MONGODB_PORT}
     ports:
       - 127.0.0.1:${MONGODB_PORT}:27017
@@ -312,8 +318,8 @@ services:
         max-size: ${LOG_MAX_SIZE}
         max-file: ${LOG_MAX_FILE}
   portainer_container:
-    container_name: portainer
-    image: portainer/portainer
+    container_name: portainer_${PORTAINER_VERSION}
+    image: portainer/portainer-ce:${PORTAINER_VERSION}
     command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     ports:
       - 127.0.0.1:${PORTAINER_PORT}:9000
