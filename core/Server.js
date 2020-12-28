@@ -55,7 +55,7 @@ const socketIoHttpServer = socketIo(httpServer, {
 		methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"]
 	},
 	cookie: {
-        name: "one_workspace_socketIo",
+        name: "docker_server_socketIo",
         httpOnly: true,
         path: "/"
     }
@@ -66,7 +66,7 @@ const socketIoHttpsServer = socketIo(httpsServer, {
 		methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"]
 	},
     cookie: {
-        name: "one_workspace_socketIo",
+        name: "docker_server_socketIo",
         httpOnly: true,
         path: "/"
     }
