@@ -53,5 +53,6 @@ virtual_host/reinventsoftware.org.conf
 virtual_host/ls1_reinventsoftware.org.conf
 virtual_host/stg_reinventsoftware.org.conf
 .env
+.digest_htpasswd
 error.log
 debug.log
