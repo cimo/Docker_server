@@ -13,8 +13,6 @@ ARG NODEJS_ENV
 ARG NODEJS_DIGEST_ENABLE
 ARG NODEJS_PORT_HTTP
 ARG NODEJS_PORT_HTTPS
-ARG NODEJS_PORT_VUE
-ARG NODEJS_PORT_VUE_APP
 
 ENV NODE_ENV=${NODEJS_ENV}
 ENV DEBIAN_FRONTEND=noninteractive
@@ -44,10 +42,6 @@ wget \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
-# Npm
-&& npm install -g @vue/cli \
-&& npm install -g terser \
-&& npm install -g sass \
 # Selenium
 && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add \
 && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
@@ -66,4 +60,4 @@ wget \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-EXPOSE ${NODEJS_PORT_HTTP} ${NODEJS_PORT_HTTPS} ${NODEJS_PORT_VUE} ${NODEJS_PORT_VUE_APP}
+EXPOSE ${NODEJS_PORT_HTTP} ${NODEJS_PORT_HTTPS}

@@ -12,9 +12,7 @@ const setting = {
     },
     port: {
         http: process.env.NODEJS_PORT_HTTP,
-        https: process.env.NODEJS_PORT_HTTPS,
-        vue: process.env.NODEJS_PORT_VUE,
-        vue_app: process.env.NODEJS_PORT_VUE_APP
+        https: process.env.NODEJS_PORT_HTTPS
     },
     certificate: {
         key: `/home/${process.env.WWW_USER_NAME}/root/certificate/${process.env.CERTIFICATE_KEY}`,

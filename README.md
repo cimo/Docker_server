@@ -38,10 +38,10 @@ Web server with docker container.
 
 5) Write on terminal:
 
-        sudo chmod 775 /home/cimo/docker_server/root/web_space
-        sudo find /home/cimo/docker_server/root/web_space -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
-        sudo find /home/cimo/docker_server/root/web_space -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
-        sudo find /home/cimo/docker_server/root/web_space -name "*.sh" -exec chmod 774 {} \;
+        sudo chmod 775 /home/cimo/docker_server/root/web
+        sudo find /home/cimo/docker_server/root/web -type d -exec chown cimo:www-data {} \; -exec chmod 775 {} \;
+        sudo find /home/cimo/docker_server/root/web -type f -not -name "sess_*" -exec chown cimo:www-data {} \; -exec chmod 664 {} \;
+        sudo find /home/cimo/docker_server/root/web -name "*.sh" -exec chmod 774 {} \;
 
 6) Add in your hosts file:
 
