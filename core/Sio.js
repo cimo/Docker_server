@@ -5,7 +5,7 @@
 let connectionCount = 0;
 
 const startup = async(helper, server, socket, type) => {
-    let address = JSON.stringify(socket.handshake.address);
+    const address = JSON.stringify(socket.handshake.address);
 
     helper.writeLog(`${address} connected to ${type} server.`);
 
@@ -13,7 +13,7 @@ const startup = async(helper, server, socket, type) => {
 
     server.emit("broadcast", `${connectionCount} clients connected to ${type} server.`);
 
-    let intervalEvent = setInterval(() => {
+    const intervalEvent = setInterval(() => {
         serverTime(socket);
     }, 1000);
 
@@ -34,7 +34,7 @@ const startup = async(helper, server, socket, type) => {
 };
 
 const serverTime = (socket) => {
-    let currentDate = new Date();
+    const currentDate = new Date();
 
     let month = currentDate.getMonth() + 1;
     month = month < 10 ? `0${month}` : `${month}`;
@@ -42,12 +42,12 @@ const serverTime = (socket) => {
     let day = currentDate.getDate();
     day = day < 10 ? `0${day}` : `${day}`;
 
-    let date = `${currentDate.getFullYear()}/${month}/${day}`;
+    const date = `${currentDate.getFullYear()}/${month}/${day}`;
 
     let minute = currentDate.getMinutes();
     minute = minute < 10 ? `0${minute}` : `${minute}`;
 
-    let time = `${currentDate.getHours()}:${minute}`;
+    const time = `${currentDate.getHours()}:${minute}`;
     
     socket.emit("serverTime", `${date} ${time}`);
 };

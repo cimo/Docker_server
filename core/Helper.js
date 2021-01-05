@@ -15,7 +15,7 @@ const writeLog = (message) => {
 };
 
 const digestCheck = (digest, callback) => {
-    let self = this;
+    const self = this;
 
     if (config.setting.digest.enable === true) {
         return digest.check((req, res) => {

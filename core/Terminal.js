@@ -19,12 +19,12 @@ const socketEvent = async(helper, socket, type) => {
 };
 
 const _pty = (helper, socket) => {
-    let ptySpawnList = [];
+    const ptySpawnList = [];
 
     socket.on("t_pty_start", (dataStart) => {
         helper.writeLog(`Terminal ${dataStart.tag} start`);
 
-        let shell = os.platform() === "win32" ? "powershell.exe" : "bash";
+        const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
         ptySpawnList[dataStart.tag] = pty.spawn(shell, [], {
             name: "xterm-color",
@@ -85,7 +85,7 @@ const _exec = (helper, socket) => {
         if (dataStart.tag !== undefined && dataStart.cmd !== undefined) {
             helper.writeLog(`Terminal t_exec_i => ${dataStart.tag} - ${dataStart.cmd}`);
 
-            let execResult = childProcess.exec(dataStart.cmd);
+            const execResult = childProcess.exec(dataStart.cmd);
             
             execResult.stdout.on("data", (data) => {
                 helper.writeLog(`t_exec_o_${dataStart.tag} => stdout: ${data}`);
@@ -113,11 +113,11 @@ const _exec = (helper, socket) => {
         if (dataStart.tag !== undefined && dataStart.cmd !== undefined && dataStart.path !== undefined) {
             helper.writeLog(`Terminal t_exec_stream_i => ${dataStart.tag} - ${dataStart.cmd} - ${dataStart.path} - ${dataStart.content}`);
 
-            let directory = path.dirname(dataStart.path);
+            const directory = path.dirname(dataStart.path);
 
             if (fs.existsSync(directory) === true) {
                 if (dataStart.cmd === "write" && dataStart.content !== undefined) {
-                    let stream = fs.createWriteStream(dataStart.path, {flags: "w", encoding: encoding, mode: "0664"});
+                    const stream = fs.createWriteStream(dataStart.path, {flags: "w", encoding: encoding, mode: "0664"});
 
                     stream.write(dataStart.content);
 
@@ -131,10 +131,10 @@ const _exec = (helper, socket) => {
                 }
                 else if (dataStart.cmd === "read") {
                     if (fs.existsSync(dataStart.path) === true) {
-                        let stream = fs.createReadStream(dataStart.path, {flags: "r", encoding: encoding});
+                        const stream = fs.createReadStream(dataStart.path, {flags: "r", encoding: encoding});
 
                         stream.on("data", (data) => {
-                            let chunk = data.toString();
+                            const chunk = data.toString();
 
                             helper.writeLog(`Read t_exec_stream_o_${dataStart.tag} => ${chunk}`);
 
