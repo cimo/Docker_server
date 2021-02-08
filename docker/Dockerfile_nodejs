@@ -35,6 +35,7 @@ zip \
 unzip \
 cron \
 wget \
+sshpass \
 # Docker
 && wget -q https://download.docker.com/linux/static/stable/x86_64/docker-19.03.9.tgz \
 && tar -xzvf docker-19.03.9.tgz -C /tmp \

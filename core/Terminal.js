@@ -8,7 +8,7 @@ const childProcess = require("child_process");
 
 const config = require("./Config");
 
-const encoding = "utf-8";
+const writeStreamEncoding = "utf-8";
 
 const socketEvent = async(helper, socket, type) => {
     helper.writeLog(`Terminal listen on ${type}`);
@@ -16,6 +16,8 @@ const socketEvent = async(helper, socket, type) => {
     _pty(helper, socket);
 
     _exec(helper, socket);
+
+    _crypt(helper, socket);
 };
 
 const _pty = (helper, socket) => {
@@ -117,7 +119,7 @@ const _exec = (helper, socket) => {
 
             if (fs.existsSync(directory) === true) {
                 if (dataStart.cmd === "write" && dataStart.content !== undefined) {
-                    const stream = fs.createWriteStream(dataStart.path, {flags: "w", encoding: encoding, mode: "0664"});
+                    const stream = fs.createWriteStream(dataStart.path, {flags: "w", encoding: writeStreamEncoding, mode: "0664"});
 
                     stream.write(dataStart.content);
 
@@ -131,7 +133,7 @@ const _exec = (helper, socket) => {
                 }
                 else if (dataStart.cmd === "read") {
                     if (fs.existsSync(dataStart.path) === true) {
-                        const stream = fs.createReadStream(dataStart.path, {flags: "r", encoding: encoding});
+                        const stream = fs.createReadStream(dataStart.path, {flags: "r", encoding: writeStreamEncoding});
 
                         stream.on("data", (data) => {
                             const chunk = data.toString();
@@ -149,6 +151,24 @@ const _exec = (helper, socket) => {
                     }
                 }
             }
+        }
+    });
+};
+
+const _crypt = (helper, socket) => {
+    socket.on("t_crypt_encrypt_i", (dataStart) => {
+        if (dataStart.tag !== undefined && dataStart.text !== undefined) {
+            helper.writeLog(`Execute t_crypt_encrypt_i => ${dataStart.tag} - ${dataStart.text}`);
+
+            socket.emit(`t_crypt_encrypt_o_${dataStart.tag}`, {out: helper.encrypt(dataStart.text)});
+        }
+    });
+
+    socket.on("t_crypt_decrypt_i", (dataStart) => {
+        if (dataStart.tag !== undefined && dataStart.hex !== undefined) {
+            helper.writeLog(`Execute t_crypt_decrypt_i => ${dataStart.tag} - ${dataStart.hex}`);
+
+            socket.emit(`t_crypt_decrypt_o_${dataStart.tag}`, {out: helper.decrypt(dataStart.hex)});
         }
     });
 };
