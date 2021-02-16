@@ -29,6 +29,8 @@ Web server with docker container.
         cd /home/cimo/docker_server/root
         sudo cp .env.dist .env
         sudo nano .env
+        sudo cp core/Env.dist.js Env.js
+        sudo nano core/Env.js
 
 3) Modify file with your configuration, save and close the file.
 
