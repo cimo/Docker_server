@@ -228,6 +228,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+      - ${NODEJS_DATA_PATH}:/home/link_root
     networks:
       default:
         ipv4_address: ${NODEJS_NETWORK_IP}
