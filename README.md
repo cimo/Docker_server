@@ -31,7 +31,7 @@ Web server with docker container.
         sudo cp core/Env.dist.js Env.js
         sudo nano core/Env.js
 
-3) Edit with your system configuration, save and close the file and write on terminal:
+3) Modify for your system configuration and save, close the file and write on terminal:
 
         sudo docker-compose up -d --build
 
