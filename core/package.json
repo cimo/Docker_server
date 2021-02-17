@@ -1,12 +1,12 @@
 {
-    "name": "One_workspace",
+    "name": "Docker_server",
     "version": "1.0.0",
     "author": "cimo",
-    "description": "One workspace",
+    "description": "Docker server",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/cimo/One_workspace"
+        "url": "https://github.com/cimo/Docker_server"
     },
     "dependencies": {
         "express": "4.17.1",

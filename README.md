@@ -63,11 +63,11 @@ Web server with docker container.
 
 10) For launch gitlab write on your browser "https://gitlab.your_domain".
 
-<b>By CIMO - https://reinventsoftware.org</b>
-
 | Library: |
 |:---|
 | Docker - https://www.docker.com/ |
+
+By CIMO - https://reinventsoftware.org
 
 Supported By:
 
