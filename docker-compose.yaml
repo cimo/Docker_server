@@ -6,8 +6,6 @@ services:
       context: ${PATH_ROOT}/docker
       dockerfile: Dockerfile_php7
       args:
-        USER_NAME: ${USER_NAME}
-        USER_PASSWORD: ${USER_PASSWORD}
         WWW_USER_NAME: ${WWW_USER_NAME}
         WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -22,8 +20,6 @@ services:
         PHP7_HOST_XDEBUG: ${PHP7_HOST_XDEBUG}
         PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
     environment:
-      USER_NAME: ${USER_NAME}
-      USER_PASSWORD: ${USER_PASSWORD}
       WWW_USER_NAME: ${WWW_USER_NAME}
       WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -198,6 +194,7 @@ services:
       dockerfile: Dockerfile_nodejs
       args:
         WWW_USER_NAME: ${WWW_USER_NAME}
+        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
         WEB_PATH: ${WEB_PATH}
         PATH_ROOT: ${PATH_ROOT}
         TIMEZONE: ${TIMEZONE}
@@ -211,6 +208,7 @@ services:
         NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
     environment:
       WWW_USER_NAME: ${WWW_USER_NAME}
+      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
       WEB_PATH: ${WEB_PATH}
       PATH_ROOT: ${PATH_ROOT}
       TIMEZONE: ${TIMEZONE}
