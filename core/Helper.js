@@ -13,7 +13,7 @@ const cryptKey = crypto.createHash("sha256").update(String(env.data.crypt.key)).
 const cryptIv = crypto.randomBytes(16);
 
 const writeLog = (message) => {
-    if (config.setting.debug === true) {
+    if (config.setting.debug) {
         fs.appendFile("./debug.log", `${message}\n`, () => {
             console.log(`writeLog => ${message}`);
         });
@@ -23,7 +23,7 @@ const writeLog = (message) => {
 const digestCheck = (digest, callback) => {
     const self = this;
 
-    if (config.setting.digest.enable === true) {
+    if (config.setting.digest.enable) {
         return digest.check((req, res) => {
             callback.apply(self, [req, res]);
         });

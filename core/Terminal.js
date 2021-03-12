@@ -43,7 +43,7 @@ const _pty = (helper, socket) => {
         });
 
         ptySpawnList[dataStart.tag].on("exit", () => {
-            if (ptySpawnList[dataStart.tag] !== undefined) {
+            if (ptySpawnList[dataStart.tag]) {
                 helper.writeLog(`Terminal t_pty_o_${dataStart.tag} => xterm_reset`);
 
                 socket.emit(`t_pty_o_${dataStart.tag}`, {tag: dataStart.tag, cmd: "xterm_reset"});
@@ -56,7 +56,7 @@ const _pty = (helper, socket) => {
     });
 
     socket.on("t_pty_i", (data) => {
-        if (ptySpawnList[data.tag] !== undefined && data.tag !== undefined && data.cmd !== undefined) {
+        if (ptySpawnList[data.tag] && data.tag && data.cmd) {
             helper.writeLog(`Terminal t_pty_i => ${data.tag} - ${data.cmd}`);
 
             ptySpawnList[data.tag].write(data.cmd);
@@ -64,7 +64,7 @@ const _pty = (helper, socket) => {
     });
 
     socket.on("t_pty_resize", (data) => {
-        if (ptySpawnList[data.tag] !== undefined && data.tag !== undefined && data.size !== undefined) {
+        if (ptySpawnList[data.tag] && data.tag && data.size) {
             helper.writeLog(`Terminal t_pty_resize => ${data.tag}`);
 
             ptySpawnList[data.tag].resize(data.size[0], data.size[1]);
@@ -72,7 +72,7 @@ const _pty = (helper, socket) => {
     });
 
     socket.on("t_pty_close", (data) => {
-        if (ptySpawnList[data.tag] !== undefined && data.tag !== undefined) {
+        if (ptySpawnList[data.tag] && data.tag) {
             helper.writeLog(`Terminal t_pty_close => ${data.tag}`);
 
             ptySpawnList[data.tag].destroy();
@@ -84,11 +84,11 @@ const _pty = (helper, socket) => {
 
 const _exec = (helper, socket) => {
     socket.on("t_exec_i", (dataStart) => {
-        if (dataStart.tag !== undefined && dataStart.cmd !== undefined) {
+        if (dataStart.tag && dataStart.cmd) {
             helper.writeLog(`Terminal t_exec_i => ${dataStart.tag} - ${dataStart.cmd}`);
 
             const execResult = childProcess.exec(dataStart.cmd);
-            
+
             execResult.stdout.on("data", (data) => {
                 helper.writeLog(`t_exec_o_${dataStart.tag} => stdout: ${data}`);
 
@@ -101,7 +101,7 @@ const _exec = (helper, socket) => {
                 socket.emit(`t_exec_o_${dataStart.tag}`, {err: data});
             });
 
-            if (dataStart.closeEnabled === undefined && dataStart.closeEnabled !== false) {
+            if (dataStart.closeEnabled) {
                 execResult.on("close", (data) => {
                     helper.writeLog(`t_exec_o_${dataStart.tag} => close: ${data}`);
 
@@ -112,13 +112,13 @@ const _exec = (helper, socket) => {
     });
 
     socket.on("t_exec_stream_i", (dataStart) => {
-        if (dataStart.tag !== undefined && dataStart.cmd !== undefined && dataStart.path !== undefined) {
+        if (dataStart.tag && dataStart.cmd && dataStart.path) {
             helper.writeLog(`Terminal t_exec_stream_i => ${dataStart.tag} - ${dataStart.cmd} - ${dataStart.path} - ${dataStart.content}`);
 
             const directory = path.dirname(dataStart.path);
 
-            if (fs.existsSync(directory) === true) {
-                if (dataStart.cmd === "write" && dataStart.content !== undefined) {
+            if (fs.existsSync(directory)) {
+                if (dataStart.cmd === "write" && dataStart.content) {
                     const stream = fs.createWriteStream(dataStart.path, {flags: "w", encoding: writeStreamEncoding, mode: "0664"});
 
                     stream.write(dataStart.content);
@@ -132,7 +132,7 @@ const _exec = (helper, socket) => {
                     });
                 }
                 else if (dataStart.cmd === "read") {
-                    if (fs.existsSync(dataStart.path) === true) {
+                    if (fs.existsSync(dataStart.path)) {
                         const stream = fs.createReadStream(dataStart.path, {flags: "r", encoding: writeStreamEncoding});
 
                         stream.on("data", (data) => {
@@ -157,7 +157,7 @@ const _exec = (helper, socket) => {
 
 const _crypt = (helper, socket) => {
     socket.on("t_crypt_encrypt_i", (dataStart) => {
-        if (dataStart.tag !== undefined && dataStart.text !== undefined) {
+        if (dataStart.tag && (dataStart.text === "" || dataStart.text)) {
             helper.writeLog(`Execute t_crypt_encrypt_i => ${dataStart.tag} - ${dataStart.text}`);
 
             socket.emit(`t_crypt_encrypt_o_${dataStart.tag}`, {out: helper.encrypt(dataStart.text)});
@@ -165,7 +165,7 @@ const _crypt = (helper, socket) => {
     });
 
     socket.on("t_crypt_decrypt_i", (dataStart) => {
-        if (dataStart.tag !== undefined && dataStart.hex !== undefined) {
+        if (dataStart.tag && (dataStart.hex === "" || dataStart.hex)) {
             helper.writeLog(`Execute t_crypt_decrypt_i => ${dataStart.tag} - ${dataStart.hex}`);
 
             socket.emit(`t_crypt_decrypt_o_${dataStart.tag}`, {out: helper.decrypt(dataStart.hex)});
