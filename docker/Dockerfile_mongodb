@@ -24,6 +24,8 @@ COPY ${PATH_ROOT}/entrypoint_mongodb.sh /docker-entrypoint-initdb.d/entrypoint_m
 RUN cd ~ \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \

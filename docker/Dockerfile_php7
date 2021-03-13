@@ -28,6 +28,8 @@ RUN cd ~ \
 && cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \
@@ -77,7 +79,7 @@ zlib1g-dev \
 && docker-php-ext-configure gmp \
 && docker-php-ext-install gd intl opcache zip pdo pdo_mysql pdo_pgsql bcmath gmp \
 # Composer
-&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+&& curl -fsSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 # Clean
 && pecl clear-cache \
 && rm -rf /var/lib/apt/lists/* \

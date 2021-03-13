@@ -20,6 +20,8 @@ COPY ${PATH_ROOT}/redis.conf /usr/local/etc/redis/redis.conf
 RUN cd ~ \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \

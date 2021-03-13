@@ -19,6 +19,8 @@ ENV DEBCONF_NOWARNINGS=yes
 RUN cd ~ \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \

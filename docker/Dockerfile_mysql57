@@ -22,6 +22,8 @@ COPY ${PATH_ROOT}/mysql_override.cnf /etc/mysql/conf.d/override.cnf
 RUN cd ~ \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \

@@ -27,6 +27,8 @@ RUN cd ~ \
 && chmod +x /usr/local/bin/entrypoint.sh \
 && apt-get update && apt-get install -y \
 software-properties-common \
+apt-transport-https \
+lsb-release \
 sudo \
 nano \
 tzdata \
@@ -41,10 +43,9 @@ wget \
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
 # Selenium
-&& wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add \
-&& echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-&& apt-get update \
-&& apt-get install -y google-chrome-stable firefox-esr \
+&& curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+&& add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" \
+&& apt-get update && apt-get install -y google-chrome-stable firefox-esr \
 && npm install -g selenium-side-runner --unsafe-perm=true --allow-root \
 && npm install -g chromedriver --unsafe-perm=true --allow-root \
 && npm install -g geckodriver --unsafe-perm=true --allow-root \
