@@ -49,7 +49,7 @@ wget \
 #&& curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
 #&& add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" \
 #&& rm /etc/apt/sources.list.d/microsoft-edge-dev.list
-&& apt-get update && apt-get install -y google-chrome-stable microsoft-edge-dev firefox-esr \
+&& apt-get update && apt-get install -y google-chrome-stable firefox-esr \
 && npm install -g selenium-side-runner --unsafe-perm=true --allow-root \
 && npm install -g chromedriver --unsafe-perm=true --allow-root \
 #&& npm install -g edgedriver --unsafe-perm=true --allow-root \
