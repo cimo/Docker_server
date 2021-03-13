@@ -317,7 +317,7 @@ services:
         max-size: ${LOG_MAX_SIZE}
         max-file: ${LOG_MAX_FILE}
   portainer_container:
-    container_name: portainer_${PORTAINER_VERSION}
+    container_name: Portainer_${PORTAINER_VERSION}
     image: portainer/portainer-ce:${PORTAINER_VERSION}
     command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
     ports:
