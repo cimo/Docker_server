@@ -45,16 +45,17 @@ wget \
 # Selenium
 && curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
 && add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" \
-&& rm /etc/apt/sources.list.d/google-chrome.list \
 #&& curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
 #&& add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" \
-#&& rm /etc/apt/sources.list.d/microsoft-edge-dev.list
+#microsoft-edge-dev
 && apt-get update && apt-get install -y google-chrome-stable firefox-esr \
 && npm install -g selenium-side-runner --unsafe-perm=true --allow-root \
 && npm install -g chromedriver --unsafe-perm=true --allow-root \
 #&& npm install -g edgedriver --unsafe-perm=true --allow-root \
 && npm install -g geckodriver --unsafe-perm=true --allow-root \
 # Clean
+&& rm /etc/apt/sources.list.d/google-chrome.list \
+#&& rm /etc/apt/sources.list.d/microsoft-edge-dev.list \
 && rm -rf /var/lib/apt/lists/* \
 && apt-get clean -y \
 && apt-get autoclean -y \
