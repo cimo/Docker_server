@@ -5,7 +5,7 @@ Web server with docker container.
 
 | Info: |
 |:---|
-| Cross platform (Windows, Linux, Mac) |
+| Cross platform (Windows, Linux, Mac, Android, Ios) |
 
 | Conatiner: |
 |:---|
@@ -59,7 +59,7 @@ Web server with docker container.
 
 | Library: |
 |:---|
-| Docker - https://www.docker.com/ |
+| Docker - https://www.docker.com |
 
 By CIMO - https://reinventsoftware.org
 

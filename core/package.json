@@ -1,12 +1,12 @@
 {
-    "name": "Docker_server",
+    "name": "NodeJs_sk",
     "version": "1.0.0",
     "author": "cimo",
-    "description": "Docker server",
+    "description": "NodeJs sk",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/cimo/Docker_server"
+        "url": "https://github.com/cimo/NodeJs_sk"
     },
     "dependencies": {
         "express": "4.17.1",
