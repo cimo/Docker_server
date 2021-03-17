@@ -23,7 +23,7 @@ const writeLog = (message) => {
 const digestCheck = (digest, callback) => {
     const self = this;
 
-    if (config.setting.digest.enable) {
+    if (config.setting.digest.enabled) {
         return digest.check((req, res) => {
             callback.apply(self, [req, res]);
         });

@@ -4,11 +4,11 @@
 
 const setting = {
     debug: false,
-    ip: "0.0.0.0",
+    ip: process.env.NODEJS_IP,
     cwd: process.env.HOME,
     env: process.env,
     socketIo: {
-        domain: "localhost"
+        domain: process.env.NODEJS_DOMAIN
     },
     port: {
         http: process.env.NODEJS_PORT_HTTP,
@@ -21,7 +21,7 @@ const setting = {
     digest: {
         realm: "Auth - Digest",
         path: `/home/${process.env.WWW_USER_NAME}/root${process.env.WEB_PATH}`,
-        enable: process.env.NODEJS_DIGEST_ENABLE
+        enabled: process.env.NODEJS_DIGEST_ENABLED
     }
 };
 

@@ -11,7 +11,9 @@ ARG CERTIFICATE_FILE
 ARG CERTIFICATE_KEY
 ARG CERTIFICATE_CHAIN
 ARG NODEJS_ENV
-ARG NODEJS_DIGEST_ENABLE
+ARG NODEJS_DOMAIN
+ARG NODEJS_IP
+ARG NODEJS_DIGEST_ENABLED
 ARG NODEJS_PORT_HTTP
 ARG NODEJS_PORT_HTTPS
 
@@ -42,12 +44,12 @@ wget \
 # Time
 && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 && dpkg-reconfigure -f noninteractive tzdata \
+# Npm
+&& npm install -g selenium-side-runner chromedriver --unsafe-perm=true --allow-root \
 # Selenium
 && curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
 && add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" \
 && apt-get update && apt-get install -y google-chrome-stable \
-&& npm install -g selenium-side-runner --unsafe-perm=true --allow-root \
-&& npm install -g chromedriver --unsafe-perm=true --allow-root \
 # Clean
 && rm /etc/apt/sources.list.d/google-chrome.list \
 && rm -rf /var/lib/apt/lists/* \
