@@ -105,7 +105,7 @@ var eventExec = function eventExec(socket) {
           });
         });
 
-        if (dataStart.closeEnabled) {
+        if (dataStart.closeActive) {
           execResult.on("close", function (data) {
             Helper.writeLog("t_exec_o_".concat(dataStart.tag, " => close: ").concat(data));
             socket.emit("t_exec_o_".concat(dataStart.tag), {
