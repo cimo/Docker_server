@@ -11,6 +11,8 @@ var Path = _interopRequireWildcard(require("path"));
 
 var Fs = _interopRequireWildcard(require("fs"));
 
+var HttpAuth = _interopRequireWildcard(require("http-auth"));
+
 var Crypto = _interopRequireWildcard(require("crypto"));
 
 var Config = _interopRequireWildcard(require("./Config"));
@@ -21,6 +23,10 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+var httpAuth = HttpAuth.digest({
+  realm: Config.data.digest.realm,
+  file: "".concat(Config.data.digest.path, "/.digest_htpasswd")
+});
 var cryptAlgorithm = "aes-256-cbc";
 var cryptKey = Crypto.createHash("sha256").update(String(Config.data.crypt.key)).digest("base64").substr(0, 32);
 var cryptIv = Crypto.randomBytes(16);
@@ -37,9 +43,9 @@ var writeLog = function writeLog(message) {
 
 exports.writeLog = writeLog;
 
-var digestCheck = function digestCheck(digest, callback) {
+var digestCheck = function digestCheck(callback) {
   if (Config.data.digest.active === "on") {
-    return digest.check(function (req, res) {
+    return httpAuth.check(function (req, res) {
       callback.apply(_this, [req, res]);
     });
   } else {

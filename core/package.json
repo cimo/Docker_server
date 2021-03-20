@@ -46,6 +46,8 @@
         "@types/http-auth": "4.1.0",
         "@types/cors": "2.8.10",
         "@types/csurf": "1.11.0",
+        "@types/engine.io": "3.1.5",
+        "@types/socket.io-parser": "2.2.1",
         "@types/socket.io": "2.1.13"
     }
 }

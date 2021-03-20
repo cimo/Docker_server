@@ -14,13 +14,11 @@ var BodyParser = _interopRequireWildcard(require("body-parser"));
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
-var HttpAuth = _interopRequireWildcard(require("http-auth"));
-
 var _cors = _interopRequireDefault(require("cors"));
 
 var _csurf = _interopRequireDefault(require("csurf"));
 
-var _socket = require("socket.io");
+var SocketIo = _interopRequireWildcard(require("socket.io"));
 
 var Config = _interopRequireWildcard(require("./Config"));
 
@@ -42,11 +40,7 @@ var certificate = {
   key: Fs.readFileSync(Config.data.certificate.key),
   cert: Fs.readFileSync(Config.data.certificate.cert)
 };
-var httpAuthOption = HttpAuth.digest({
-  realm: Config.data.digest.realm,
-  file: "".concat(Config.data.digest.path, "/.digest_htpasswd")
-});
-var originList = ["http://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.http), "https://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.https)];
+var originList = ["http://".concat(Config.data.socketIo.domain), "https://".concat(Config.data.socketIo.domain), "http://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.http), "https://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.https)];
 
 if (Config.data.port.vue) {
   originList.push("http://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.vue));
@@ -81,21 +75,21 @@ app.use((0, _csurf["default"])({
 }));
 var serverHttp = Http.createServer(app);
 var serverHttps = Https.createServer(certificate, app);
-var socketIoServerHttp = new _socket.Server(serverHttp, {
+var socketIoServerHttp = new SocketIo.Server(serverHttp, {
   cors: {
     origin: corsOption.origin,
     methods: corsOption.methods
   },
   cookie: false
 });
-var socketIoServerHttps = new _socket.Server(serverHttps, {
+var socketIoServerHttps = new SocketIo.Server(serverHttps, {
   cors: {
     origin: corsOption.origin,
     methods: corsOption.methods
   },
   cookie: false
 });
-app.get("/", Helper.digestCheck(httpAuthOption, function (request, result) {
+app.get("/", Helper.digestCheck(function (request, result) {
   result.send("");
 }));
 var portHttp = Config.data.port.http ? parseInt(Config.data.port.http) : 0;
@@ -106,11 +100,13 @@ serverHttp.listen(portHttp, Config.data.ip, 0, function () {
 });
 serverHttps.listen(portHttps, Config.data.ip, 0, function () {
   Helper.writeLog("Listen on https://".concat(Config.data.ip, ":").concat(Config.data.port.https));
-});
+}); // noinspection TypeScriptValidateTypes
+
 socketIoServerHttp.on("connection", function (socket) {
   Sio.startup(socketIoServerHttp, socket, "http");
   Terminal.socketEvent(socket, "http");
-});
+}); // noinspection TypeScriptValidateTypes
+
 socketIoServerHttps.on("connection", function (socket) {
   Sio.startup(socketIoServerHttps, socket, "https");
   Terminal.socketEvent(socket, "https");
