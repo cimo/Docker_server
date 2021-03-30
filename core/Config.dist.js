@@ -7,6 +7,7 @@ exports.data = void 0;
 var data = {
   debug: process.env.NODEJS_DEBUG,
   ip: process.env.NODEJS_IP,
+  pathStatic: process.env.NODEJS_PATH_STATIC,
   cwd: process.env.HOME,
   env: process.env,
   socketIo: {

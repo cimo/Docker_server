@@ -1,11 +1,17 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.socketEvent = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var Os = _interopRequireWildcard(require("os"));
 
@@ -21,14 +27,10 @@ var Config = _interopRequireWildcard(require("./Config"));
 
 var Helper = _interopRequireWildcard(require("./Helper"));
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
+var ptySpawnList = [];
 var writeStreamEncoding = "utf-8";
 
 var eventPty = function eventPty(socket) {
-  var ptySpawnList = [];
   socket.on("t_pty_start", function (dataStart) {
     if (dataStart.tag) {
       Helper.writeLog("Terminal ".concat(dataStart.tag, " start"));
@@ -183,11 +185,28 @@ var eventCrypt = function eventCrypt(socket) {
   });
 };
 
-var socketEvent = function socketEvent(socket, type) {
-  Helper.writeLog("Terminal listen on ".concat(type));
-  eventPty(socket);
-  eventExec(socket);
-  eventCrypt(socket);
-};
+var socketEvent = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(socket, type) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            Helper.writeLog("Terminal listen on ".concat(type));
+            eventPty(socket);
+            eventExec(socket);
+            eventCrypt(socket);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function socketEvent(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 exports.socketEvent = socketEvent;

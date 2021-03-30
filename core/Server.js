@@ -1,6 +1,8 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 var Fs = _interopRequireWildcard(require("fs"));
 
@@ -30,16 +32,6 @@ var Terminal = _interopRequireWildcard(require("./Terminal"));
 
 var Vue = _interopRequireWildcard(require("./Vue"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-var certificate = {
-  key: Fs.readFileSync(Config.data.certificate.key),
-  cert: Fs.readFileSync(Config.data.certificate.cert)
-};
 var originList = ["http://".concat(Config.data.socketIo.domain), "https://".concat(Config.data.socketIo.domain), "http://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.http), "https://".concat(Config.data.socketIo.domain, ":").concat(Config.data.port.https)];
 
 if (Config.data.port.vue) {
@@ -63,7 +55,7 @@ var corsOption = {
   optionsSuccessStatus: 200
 };
 var app = (0, _express["default"])();
-app.use(_express["default"]["static"](Helper.urlRoot));
+app.use(_express["default"]["static"](Helper.pathStatic));
 app.use(BodyParser.urlencoded({
   extended: false
 }));
@@ -73,13 +65,22 @@ app.use((0, _cors["default"])(corsOption));
 app.use((0, _csurf["default"])({
   cookie: true
 }));
+app.get("/", Helper.digestCheck(function (request, result) {
+  result.send("");
+}));
 var serverHttp = Http.createServer(app);
-var serverHttps = Https.createServer(certificate, app);
+var serverHttps = Https.createServer({
+  key: Fs.readFileSync(Config.data.certificate.key),
+  cert: Fs.readFileSync(Config.data.certificate.cert)
+}, app);
 var socketIoServerHttp = new SocketIo.Server(serverHttp, {
   cors: {
     origin: corsOption.origin,
     methods: corsOption.methods
   },
+  transports: ["websocket"],
+  pingTimeout: 60000,
+  pingInterval: 8000,
   cookie: false
 });
 var socketIoServerHttps = new SocketIo.Server(serverHttps, {
@@ -87,11 +88,11 @@ var socketIoServerHttps = new SocketIo.Server(serverHttps, {
     origin: corsOption.origin,
     methods: corsOption.methods
   },
+  transports: ["websocket"],
+  pingTimeout: 60000,
+  pingInterval: 8000,
   cookie: false
 });
-app.get("/", Helper.digestCheck(function (request, result) {
-  result.send("");
-}));
 var portHttp = Config.data.port.http ? parseInt(Config.data.port.http) : 0;
 var portHttps = Config.data.port.https ? parseInt(Config.data.port.https) : 0;
 serverHttp.listen(portHttp, Config.data.ip, 0, function () {
@@ -103,11 +104,11 @@ serverHttps.listen(portHttps, Config.data.ip, 0, function () {
 }); // noinspection TypeScriptValidateTypes
 
 socketIoServerHttp.on("connection", function (socket) {
-  Sio.startup(socketIoServerHttp, socket, "http");
-  Terminal.socketEvent(socket, "http");
+  Terminal.socketEvent(socket, "http").then(function () {});
+  Sio.startup(socketIoServerHttp, socket, "http").then(function () {});
 }); // noinspection TypeScriptValidateTypes
 
 socketIoServerHttps.on("connection", function (socket) {
-  Sio.startup(socketIoServerHttps, socket, "https");
-  Terminal.socketEvent(socket, "https");
+  Terminal.socketEvent(socket, "https").then(function () {});
+  Sio.startup(socketIoServerHttps, socket, "https").then(function () {});
 });

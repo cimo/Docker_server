@@ -11,8 +11,8 @@
     "scripts": {
         "test": "echo 'Error no test specified' && exit 1",
         "check": "eslint . --fix",
-        "execute": "tsc --noEmit && babel-node src/Server.ts --extensions '.ts'",
-        "build": "tsc --noEmit && babel src -d dist --extensions '.ts'"
+        "build": "tsc --noEmit && babel src -d dist --extensions '.ts'",
+        "execute": "npm run check && npm run build && babel-node src/Server.ts --extensions '.ts'"
     },
     "dependencies": {
         "express": "4.17.1",
@@ -38,6 +38,7 @@
         "@babel/node": "7.13.10",
         "@babel/preset-env": "7.13.10",
         "@babel/preset-typescript": "7.13.0",
+        "@babel/plugin-transform-runtime": "7.13.10",
         "@types/node": "14.14.35",
         "@types/express": "4.17.11",
         "@types/http-server": "0.10.1",

@@ -1,17 +1,19 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.startup = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var Helper = _interopRequireWildcard(require("./Helper"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var connectionCount = 0;
 
@@ -28,26 +30,44 @@ var serverTime = function serverTime(socket) {
   socket.emit("serverTime", "".concat(date, " ").concat(time));
 };
 
-var startup = function startup(server, socket, type) {
-  var address = JSON.stringify(socket.handshake.address);
-  Helper.writeLog("".concat(address, " connected to ").concat(type, " server."));
-  connectionCount++;
-  server.emit("broadcast", "".concat(connectionCount, " clients connected to ").concat(type, " server."));
-  var intervalEvent = setInterval(function () {
-    serverTime(socket);
-  }, 1000);
-  socket.emit("message", "Connected to ".concat(type, " server."));
-  socket.on("disconnect", function () {
-    Helper.writeLog("".concat(address, " disconnected from ").concat(type, " client."));
-    connectionCount--;
-    server.emit("broadcast", "".concat(connectionCount, " clients disconnected from ").concat(type, " server."));
+var startup = /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(server, socket, type) {
+    var address, intervalEvent;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            address = JSON.stringify(socket.handshake.address);
+            Helper.writeLog("".concat(address, " connected to ").concat(type, " server."));
+            connectionCount++;
+            server.emit("broadcast", "".concat(connectionCount, " clients connected to ").concat(type, " server."));
+            intervalEvent = setInterval(function () {
+              serverTime(socket);
+            }, 1000);
+            socket.emit("message", "Connected to ".concat(type, " server."));
+            socket.on("disconnect", function () {
+              Helper.writeLog("".concat(address, " disconnected from ").concat(type, " client."));
+              connectionCount--;
+              server.emit("broadcast", "".concat(connectionCount, " clients disconnected from ").concat(type, " server."));
 
-    if (connectionCount === 0) {
-      clearInterval(intervalEvent);
-    }
+              if (connectionCount === 0) {
+                clearInterval(intervalEvent);
+              }
 
-    socket.emit("message", "Disconnected from ".concat(type, " server."));
-  });
-};
+              socket.emit("message", "Disconnected from ".concat(type, " server."));
+            });
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function startup(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 exports.startup = startup;
