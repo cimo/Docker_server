@@ -9,13 +9,13 @@ Web server with docker container.
 
 | Conatiner: |
 |:---|
-| Php 7.4-fpm |
-| Apache 2.4 |
+| NodeJs 14.16.0 |
+| Apache 2.4.46 |
+| Php 7.4.16-fpm |
 | MySql 5.7 |
-| PostgreSql 10.13 |
-| NodeJs 12.18.1 |
-| Redis 6.0.9 |
-| MongoDb 4.4.1 |
+| PostgreSql 10.16 |
+| Redis 6.2.1 |
+| MongoDb 4.4.4 |
 | Portainer 2.1.1 |
 | Nextcloud 20.0.4 |
 | Gitlab 13.7.0-ce.0 |
