@@ -45,7 +45,7 @@ Web server with docker container.
 5) Add in your hosts file:
 
          127.0.0.1 localhost
-         127.0.0.1 localhost-php7
+         127.0.0.1 localhost-php
 
 ## Portainer:
 6) For launch portainer write on your browser "https://portainer.your_domain".

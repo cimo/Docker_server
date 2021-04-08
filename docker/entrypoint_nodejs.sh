@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PATH_CORE="/home/${WWW_USER_NAME}/root/core"
+PATH_CORE="/home/${WWW_USER_NAME}/root${NODEJS_PATH_STATIC}"
 
 cd "${PATH_CORE}"
 

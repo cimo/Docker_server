@@ -1,400 +1,400 @@
 version: '3.8'
 services:
-  php7_container:
-    container_name: Php_${PHP7_VERSION}-fpm
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_php7
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        PHP7_VERSION: ${PHP7_VERSION}
-        PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
-        PHP7_VH_NAME: ${PHP7_VH_NAME}
-        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-        PHP7_KEY_XDEBUG: ${PHP7_KEY_XDEBUG}
-        PHP7_HOST_XDEBUG: ${PHP7_HOST_XDEBUG}
-        PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      PHP7_VERSION: ${PHP7_VERSION}
-      PHP7_PATH_ROOT: ${PHP7_PATH_ROOT}
-      PHP7_VH_NAME: ${PHP7_VH_NAME}
-      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-      PHP7_KEY_XDEBUG: ${PHP7_KEY_XDEBUG}
-      PHP7_HOST_XDEBUG: ${PHP7_HOST_XDEBUG}
-      PHP7_PORT_XDEBUG: ${PHP7_PORT_XDEBUG}
-    ports:
-      - 127.0.0.1:${PHP7_PORT_FPM}:${PHP7_PORT_FPM}
-      - 127.0.0.1:${PHP7_PORT_XDEBUG}:${PHP7_PORT_XDEBUG}
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-    networks:
-      default:
-        ipv4_address: ${PHP7_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  apache_container:
-    container_name: Apache_${APACHE_VERSION}
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_apache
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        CERTIFICATE_FILE: ${CERTIFICATE_FILE}
-        CERTIFICATE_KEY: ${CERTIFICATE_KEY}
-        CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
-        DOMAIN: ${DOMAIN}
-        APACHE_VERSION: ${APACHE_VERSION}
-        APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-        APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
-        APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
-        PHP7_VH_NAME: ${PHP7_VH_NAME}
-        PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-        NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
-        NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-        PORTAINER_PORT: ${PORTAINER_PORT}
-        GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
-        GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      CERTIFICATE_FILE: ${CERTIFICATE_FILE}
-      CERTIFICATE_KEY: ${CERTIFICATE_KEY}
-      CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
-      DOMAIN: ${DOMAIN}
-      APACHE_VERSION: ${APACHE_VERSION}
-      APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
-      APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
-      APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
-      PHP7_VH_NAME: ${PHP7_VH_NAME}
-      PHP7_PORT_FPM: ${PHP7_PORT_FPM}
-      NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
-      NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-      PORTAINER_PORT: ${PORTAINER_PORT}
-      GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
-      GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
-    ports:
-      - ${APACHE_PORT_HTTP}:80
-      - ${APACHE_PORT_HTTPS}:443
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
-    networks:
-      default:
-        ipv4_address: ${APACHE_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  mysql57_container:
-    container_name: MySql_5.7
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_mysql57
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        MYSQL_USER: ${MYSQL_USER}
-        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        MYSQL57_VERSION: ${MYSQL57_VERSION}
-        MYSQL57_PORT: ${MYSQL57_PORT}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL57_VERSION: ${MYSQL57_VERSION}
-      MYSQL57_PORT: ${MYSQL57_PORT}
-    ports:
-      - 127.0.0.1:${MYSQL57_PORT}:3306
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${MYSQL57_DATA_PATH}:/var/lib/mysql
-    networks:
-      default:
-        ipv4_address: ${MYSQL57_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  postgresql_container:
-    container_name: PostgreSql_${POSTGRES_VERSION}
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_postgresql
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        POSTGRES_VERSION: ${POSTGRES_VERSION}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_PORT: ${POSTGRES_PORT}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      POSTGRES_VERSION: ${POSTGRES_VERSION}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-    ports:
-      - 127.0.0.1:${POSTGRES_PORT}:5432
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
-    networks:
-      default:
-        ipv4_address: ${POSTGRES_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  nodejs_container:
-    container_name: NodeJs_${NODEJS_VERSION}
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_nodejs
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        CERTIFICATE_FILE: ${CERTIFICATE_FILE}
-        CERTIFICATE_KEY: ${CERTIFICATE_KEY}
-        CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
-        NODEJS_VERSION: ${NODEJS_VERSION}
-        NODEJS_ENV: ${NODEJS_ENV}
-        NODEJS_DOMAIN: ${NODEJS_DOMAIN}
-        NODEJS_IP: ${NODEJS_IP}
-        NODEJS_PATH_STATIC: ${NODEJS_PATH_STATIC}
-        NODEJS_DEBUG: ${NODEJS_DEBUG}
-        NODEJS_DIGEST: ${NODEJS_DIGEST}
-        NODEJS_CRYPT_KEY: ${NODEJS_CRYPT_KEY}
-        NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
-        NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      CERTIFICATE_FILE: ${CERTIFICATE_FILE}
-      CERTIFICATE_KEY: ${CERTIFICATE_KEY}
-      CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
-      NODEJS_VERSION: ${NODEJS_VERSION}
-      NODEJS_ENV: ${NODEJS_ENV}
-      NODEJS_DOMAIN: ${NODEJS_DOMAIN}
-      NODEJS_IP: ${NODEJS_IP}
-      NODEJS_PATH_STATIC: ${NODEJS_PATH_STATIC}
-      NODEJS_DEBUG: ${NODEJS_DEBUG}
-      NODEJS_DIGEST: ${NODEJS_DIGEST}
-      NODEJS_CRYPT_KEY: ${NODEJS_CRYPT_KEY}
-      NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
-      NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
-    ports:
-      - 127.0.0.1:${NODEJS_PORT_HTTP}:${NODEJS_PORT_HTTP}
-      - 127.0.0.1:${NODEJS_PORT_HTTPS}:${NODEJS_PORT_HTTPS}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${NODEJS_DATA_PATH}:/home/link_root
-    networks:
-      default:
-        ipv4_address: ${NODEJS_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  redis_container:
-    container_name: Redis_${REDIS_VERSION}
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_redis
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        REDIS_VERSION: ${REDIS_VERSION}
-        REDIS_PASSWORD: ${REDIS_PASSWORD}
-        REDIS_PORT: ${REDIS_PORT}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      REDIS_VERSION: ${REDIS_VERSION}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      REDIS_PORT: ${REDIS_PORT}
-    ports:
-      - 127.0.0.1:${REDIS_PORT}:6379
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${REDIS_DATA_PATH}:/data
-    networks:
-      default:
-        ipv4_address: ${REDIS_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  mongodb_container:
-    container_name: MongoDb_${MONGODB_VERSION}
-    build:
-      context: ${PATH_ROOT}/docker
-      dockerfile: Dockerfile_mongodb
-      args:
-        WWW_USER_NAME: ${WWW_USER_NAME}
-        WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-        WEB_USER_GROUP: ${WEB_USER_GROUP}
-        WEB_PATH: ${WEB_PATH}
-        PATH_ROOT: ${PATH_ROOT}
-        TIMEZONE: ${TIMEZONE}
-        MONGODB_VERSION: ${MONGODB_VERSION}
-        MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
-        MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
-        MONGODB_DATABASE: ${MONGODB_DATABASE}
-        MONGODB_USER: ${MONGODB_USER}
-        MONGODB_PASSWORD: ${MONGODB_PASSWORD}
-        MONGODB_PORT: ${MONGODB_PORT}
-    environment:
-      WWW_USER_NAME: ${WWW_USER_NAME}
-      WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
-      WEB_USER_GROUP: ${WEB_USER_GROUP}
-      WEB_PATH: ${WEB_PATH}
-      PATH_ROOT: ${PATH_ROOT}
-      TIMEZONE: ${TIMEZONE}
-      MONGODB_VERSION: ${MONGODB_VERSION}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
-      MONGODB_DATABASE: ${MONGODB_DATABASE}
-      MONGODB_USER: ${MONGODB_USER}
-      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
-      MONGODB_PORT: ${MONGODB_PORT}
-    ports:
-      - 127.0.0.1:${MONGODB_PORT}:27017
-    volumes:
-      - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
-      - ${MONGODB_DATA_PATH}:/data/db
-    networks:
-      default:
-        ipv4_address: ${MONGODB_NETWORK_IP}
-    logging:
-      options:
-        max-size: ${LOG_MAX_SIZE}
-        max-file: ${LOG_MAX_FILE}
-  portainer_container:
-    container_name: Portainer_${PORTAINER_VERSION}
-    image: portainer/portainer-ce:${PORTAINER_VERSION}
-    command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
-    ports:
-      - 127.0.0.1:${PORTAINER_PORT}:9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${CERTIFICATE_PATH}:/certs
-      - ${PORTAINER_DATA_PATH}:/data
-    networks:
-      default:
-        ipv4_address: ${PORTAINER_NETWORK_IP}
-  nextcloud_container:
-    container_name: Nextcloud_${NEXTCLOUD_VERSION}
-    image: nextcloud:${NEXTCLOUD_VERSION}
-    environment:
-      APACHE_DISABLE_REWRITE_IP: 1
-      TRUSTED_PROXIES: ${APACHE_NETWORK_IP}
-      OVERWRITEHOST: nextcloud.${DOMAIN}
-      OVERWRITEPROTOCOL: https
-      OVERWRITEWEBROOT: "/"
-      OVERWRITECONDADDR: ${APACHE_NETWORK_IP}
-      NEXTCLOUD_TRUSTED_DOMAINS: nextcloud.${DOMAIN}
-      NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
-      NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
-      POSTGRES_HOST: ${NEXTCLOUD_DB_HOST}
-      POSTGRES_DB: ${NEXTCLOUD_DB_NAME}
-      POSTGRES_USER: ${NEXTCLOUD_DB_USER}
-      POSTGRES_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
-    ports:
-      - 127.0.0.1:${NEXTCLOUD_PORT_HTTP}:80
-    volumes:
-      - ${NEXTCLOUD_DATA_PATH}:/var/www/html
-    networks:
-      default:
-        ipv4_address: ${NEXTCLOUD_NETWORK_IP}
-  gitlab_container:
-    container_name: Gitlab_${GITLAB_VERSION}
-    image: gitlab/gitlab-ce:${GITLAB_VERSION}
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.${DOMAIN}'
-        git_data_dirs({'default' => {'path' => '/var/opt/gitlab/git-data'}})
-        gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
-        unicorn['worker_timeout'] = 60
-        unicorn['worker_processes'] = 3
-        nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
-        nginx['redirect_http_to_https'] = true
-        nginx['ssl_certificate'] = "/etc/certificate/${CERTIFICATE_FILE}"
-        nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
-        letsencrypt['enable'] = false
-    ports:
-      - 127.0.0.1:${GITLAB_PORT_SSH}:22
-      - 127.0.0.1:${GITLAB_PORT_HTTP}:80
-      - 127.0.0.1:${GITLAB_PORT_HTTPS}:443
-    volumes:
-      - ${CERTIFICATE_PATH}:/etc/certificate
-      - ${GITLAB_DATA_PATH}/conf:/etc/gitlab
-      - ${GITLAB_DATA_PATH}/opt:/var/opt/gitlab
-      - ${GITLAB_DATA_PATH}/log:/var/log/gitlab
-    networks:
-      default:
-        ipv4_address: ${GITLAB_NETWORK_IP}
+    nodejs_container:
+        container_name: NodeJs_${NODEJS_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_nodejs
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+                CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+                CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+                NODEJS_VERSION: ${NODEJS_VERSION}
+                NODEJS_ENV: ${NODEJS_ENV}
+                NODEJS_DOMAIN: ${NODEJS_DOMAIN}
+                NODEJS_IP: ${NODEJS_IP}
+                NODEJS_PATH_STATIC: ${NODEJS_PATH_STATIC}
+                NODEJS_DEBUG: ${NODEJS_DEBUG}
+                NODEJS_DIGEST: ${NODEJS_DIGEST}
+                NODEJS_CRYPT_KEY: ${NODEJS_CRYPT_KEY}
+                NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+                NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+            CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+            CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+            NODEJS_VERSION: ${NODEJS_VERSION}
+            NODEJS_ENV: ${NODEJS_ENV}
+            NODEJS_DOMAIN: ${NODEJS_DOMAIN}
+            NODEJS_IP: ${NODEJS_IP}
+            NODEJS_PATH_STATIC: ${NODEJS_PATH_STATIC}
+            NODEJS_DEBUG: ${NODEJS_DEBUG}
+            NODEJS_DIGEST: ${NODEJS_DIGEST}
+            NODEJS_CRYPT_KEY: ${NODEJS_CRYPT_KEY}
+            NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+            NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+        ports:
+            - 127.0.0.1:${NODEJS_PORT_HTTP}:${NODEJS_PORT_HTTP}
+            - 127.0.0.1:${NODEJS_PORT_HTTPS}:${NODEJS_PORT_HTTPS}
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${NODEJS_DATA_PATH}:/home/link_root
+        networks:
+            default:
+                ipv4_address: ${NODEJS_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    apache_container:
+        container_name: Apache_${APACHE_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_apache
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+                CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+                CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+                DOMAIN: ${DOMAIN}
+                APACHE_VERSION: ${APACHE_VERSION}
+                APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
+                APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
+                APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
+                PHP_VH_NAME: ${PHP_VH_NAME}
+                PHP_PORT_FPM: ${PHP_PORT_FPM}
+                NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+                NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+                PORTAINER_PORT: ${PORTAINER_PORT}
+                GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
+                GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            CERTIFICATE_FILE: ${CERTIFICATE_FILE}
+            CERTIFICATE_KEY: ${CERTIFICATE_KEY}
+            CERTIFICATE_CHAIN: ${CERTIFICATE_CHAIN}
+            DOMAIN: ${DOMAIN}
+            APACHE_VERSION: ${APACHE_VERSION}
+            APACHE_PATH_ROOT: ${APACHE_PATH_ROOT}
+            APACHE_PORT_HTTP: ${APACHE_PORT_HTTP}
+            APACHE_PORT_HTTPS: ${APACHE_PORT_HTTPS}
+            PHP_VH_NAME: ${PHP_VH_NAME}
+            PHP_PORT_FPM: ${PHP_PORT_FPM}
+            NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
+            NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
+            PORTAINER_PORT: ${PORTAINER_PORT}
+            GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
+            GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
+        ports:
+            - ${APACHE_PORT_HTTP}:80
+            - ${APACHE_PORT_HTTPS}:443
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${PATH_ROOT}:${APACHE_PATH_ROOT}/htdocs
+        networks:
+            default:
+                ipv4_address: ${APACHE_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    php_container:
+        container_name: Php_${PHP_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_php
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                PHP_VERSION: ${PHP_VERSION}
+                PHP_PATH_ROOT: ${PHP_PATH_ROOT}
+                PHP_VH_NAME: ${PHP_VH_NAME}
+                PHP_PORT_FPM: ${PHP_PORT_FPM}
+                PHP_KEY_XDEBUG: ${PHP_KEY_XDEBUG}
+                PHP_HOST_XDEBUG: ${PHP_HOST_XDEBUG}
+                PHP_PORT_XDEBUG: ${PHP_PORT_XDEBUG}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            PHP_VERSION: ${PHP_VERSION}
+            PHP_PATH_ROOT: ${PHP_PATH_ROOT}
+            PHP_VH_NAME: ${PHP_VH_NAME}
+            PHP_PORT_FPM: ${PHP_PORT_FPM}
+            PHP_KEY_XDEBUG: ${PHP_KEY_XDEBUG}
+            PHP_HOST_XDEBUG: ${PHP_HOST_XDEBUG}
+            PHP_PORT_XDEBUG: ${PHP_PORT_XDEBUG}
+        ports:
+            - 127.0.0.1:${PHP_PORT_FPM}:${PHP_PORT_FPM}
+            - 127.0.0.1:${PHP_PORT_XDEBUG}:${PHP_PORT_XDEBUG}
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+        networks:
+            default:
+                ipv4_address: ${PHP_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    mysql_container:
+        container_name: MySql_5.7
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_mysql
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                MYSQL_VERSION: ${MYSQL_VERSION}
+                MYSQL_PORT: ${MYSQL_PORT}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_VERSION: ${MYSQL_VERSION}
+            MYSQL_PORT: ${MYSQL_PORT}
+        ports:
+            - 127.0.0.1:${MYSQL_PORT}:3306
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${MYSQL_DATA_PATH}:/var/lib/mysql
+        networks:
+            default:
+                ipv4_address: ${MYSQL_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    postgresql_container:
+        container_name: PostgreSql_${POSTGRES_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_postgresql
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                POSTGRES_VERSION: ${POSTGRES_VERSION}
+                POSTGRES_USER: ${POSTGRES_USER}
+                POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+                POSTGRES_PORT: ${POSTGRES_PORT}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            POSTGRES_VERSION: ${POSTGRES_VERSION}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_PORT: ${POSTGRES_PORT}
+        ports:
+            - 127.0.0.1:${POSTGRES_PORT}:5432
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+        networks:
+            default:
+                ipv4_address: ${POSTGRES_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    redis_container:
+        container_name: Redis_${REDIS_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_redis
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                REDIS_VERSION: ${REDIS_VERSION}
+                REDIS_PASSWORD: ${REDIS_PASSWORD}
+                REDIS_PORT: ${REDIS_PORT}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            REDIS_VERSION: ${REDIS_VERSION}
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+            REDIS_PORT: ${REDIS_PORT}
+        ports:
+            - 127.0.0.1:${REDIS_PORT}:6379
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${REDIS_DATA_PATH}:/data
+        networks:
+            default:
+                ipv4_address: ${REDIS_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    mongodb_container:
+        container_name: MongoDb_${MONGODB_VERSION}
+        build:
+            context: ${PATH_ROOT}/docker
+            dockerfile: Dockerfile_mongodb
+            args:
+                WWW_USER_NAME: ${WWW_USER_NAME}
+                WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+                WEB_USER_GROUP: ${WEB_USER_GROUP}
+                WEB_PATH: ${WEB_PATH}
+                PATH_ROOT: ${PATH_ROOT}
+                TIMEZONE: ${TIMEZONE}
+                MONGODB_VERSION: ${MONGODB_VERSION}
+                MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
+                MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+                MONGODB_DATABASE: ${MONGODB_DATABASE}
+                MONGODB_USER: ${MONGODB_USER}
+                MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+                MONGODB_PORT: ${MONGODB_PORT}
+        environment:
+            WWW_USER_NAME: ${WWW_USER_NAME}
+            WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
+            WEB_USER_GROUP: ${WEB_USER_GROUP}
+            WEB_PATH: ${WEB_PATH}
+            PATH_ROOT: ${PATH_ROOT}
+            TIMEZONE: ${TIMEZONE}
+            MONGODB_VERSION: ${MONGODB_VERSION}
+            MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+            MONGODB_DATABASE: ${MONGODB_DATABASE}
+            MONGODB_USER: ${MONGODB_USER}
+            MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+            MONGODB_PORT: ${MONGODB_PORT}
+        ports:
+            - 127.0.0.1:${MONGODB_PORT}:27017
+        volumes:
+            - ${PATH_ROOT}:/home/${WWW_USER_NAME}/root
+            - ${MONGODB_DATA_PATH}:/data/db
+        networks:
+            default:
+                ipv4_address: ${MONGODB_NETWORK_IP}
+        logging:
+            options:
+                max-size: ${LOG_MAX_SIZE}
+                max-file: ${LOG_MAX_FILE}
+    portainer_container:
+        container_name: Portainer_${PORTAINER_VERSION}
+        image: portainer/portainer-ce:${PORTAINER_VERSION}
+        command: --no-analytics --ssl --sslcert /certs/${CERTIFICATE_FILE} --sslkey /certs/${CERTIFICATE_KEY}
+        ports:
+            - 127.0.0.1:${PORTAINER_PORT}:9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${CERTIFICATE_PATH}:/certs
+            - ${PORTAINER_DATA_PATH}:/data
+        networks:
+            default:
+                ipv4_address: ${PORTAINER_NETWORK_IP}
+    nextcloud_container:
+        container_name: Nextcloud_${NEXTCLOUD_VERSION}
+        image: nextcloud:${NEXTCLOUD_VERSION}
+        environment:
+            APACHE_DISABLE_REWRITE_IP: 1
+            TRUSTED_PROXIES: ${APACHE_NETWORK_IP}
+            OVERWRITEHOST: nextcloud.${DOMAIN}
+            OVERWRITEPROTOCOL: https
+            OVERWRITEWEBROOT: "/"
+            OVERWRITECONDADDR: ${APACHE_NETWORK_IP}
+            NEXTCLOUD_TRUSTED_DOMAINS: nextcloud.${DOMAIN}
+            NEXTCLOUD_ADMIN_USER: ${NEXTCLOUD_ADMIN_USER}
+            NEXTCLOUD_ADMIN_PASSWORD: ${NEXTCLOUD_ADMIN_PASSWORD}
+            POSTGRES_HOST: ${NEXTCLOUD_DB_HOST}
+            POSTGRES_DB: ${NEXTCLOUD_DB_NAME}
+            POSTGRES_USER: ${NEXTCLOUD_DB_USER}
+            POSTGRES_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+        ports:
+            - 127.0.0.1:${NEXTCLOUD_PORT_HTTP}:80
+        volumes:
+            - ${NEXTCLOUD_DATA_PATH}:/var/www/html
+        networks:
+            default:
+                ipv4_address: ${NEXTCLOUD_NETWORK_IP}
+    gitlab_container:
+        container_name: Gitlab_${GITLAB_VERSION}
+        image: gitlab/gitlab-ce:${GITLAB_VERSION}
+        environment:
+            GITLAB_OMNIBUS_CONFIG: |
+                external_url 'https://gitlab.${DOMAIN}'
+                git_data_dirs({'default' => {'path' => '/var/opt/gitlab/git-data'}})
+                gitlab_rails['lfs_enabled'] = true
+                gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_PORT_SSH}
+                unicorn['worker_timeout'] = 60
+                unicorn['worker_processes'] = 3
+                nginx['listen_port'] = ${GITLAB_PORT_HTTPS}
+                nginx['redirect_http_to_https'] = true
+                nginx['ssl_certificate'] = "/etc/certificate/${CERTIFICATE_FILE}"
+                nginx['ssl_certificate_key'] = "/etc/certificate/${CERTIFICATE_KEY}"
+                letsencrypt['enable'] = false
+        ports:
+            - 127.0.0.1:${GITLAB_PORT_SSH}:22
+            - 127.0.0.1:${GITLAB_PORT_HTTP}:80
+            - 127.0.0.1:${GITLAB_PORT_HTTPS}:443
+        volumes:
+            - ${CERTIFICATE_PATH}:/etc/certificate
+            - ${GITLAB_DATA_PATH}/conf:/etc/gitlab
+            - ${GITLAB_DATA_PATH}/opt:/var/opt/gitlab
+            - ${GITLAB_DATA_PATH}/log:/var/log/gitlab
+        networks:
+            default:
+                ipv4_address: ${GITLAB_NETWORK_IP}
 networks:
-  default:
-    driver: ${NETWORK_DRIVER}
-    ipam:
-      driver: default
-      config:
-        - subnet: ${NETWORK_SUB}
+    default:
+        driver: ${NETWORK_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: ${NETWORK_SUB}

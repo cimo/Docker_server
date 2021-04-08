@@ -1,6 +1,6 @@
-ARG PHP7_VERSION
+ARG PHP_VERSION
 
-FROM php:${PHP7_VERSION}-fpm
+FROM php:${PHP_VERSION}
 
 ARG WWW_USER_NAME
 ARG WWW_USER_PASSWORD
@@ -8,24 +8,24 @@ ARG WEB_USER_GROUP
 ARG WEB_PATH
 ARG PATH_ROOT
 ARG TIMEZONE
-ARG PHP7_PATH_ROOT
-ARG PHP7_VH_NAME
-ARG PHP7_PORT_FPM
-ARG PHP7_KEY_XDEBUG
-ARG PHP7_HOST_XDEBUG
-ARG PHP7_PORT_XDEBUG
+ARG PHP_PATH_ROOT
+ARG PHP_VH_NAME
+ARG PHP_PORT_FPM
+ARG PHP_KEY_XDEBUG
+ARG PHP_HOST_XDEBUG
+ARG PHP_PORT_XDEBUG
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
-COPY ${PATH_ROOT}/php7_zz-docker.conf ${PHP7_PATH_ROOT}/php-fpm.d/zz-docker.conf
-COPY ${PATH_ROOT}/php7_override.ini ${PHP7_PATH_ROOT}/php/conf.d/override.ini
+COPY ${PATH_ROOT}/php_zz-docker.conf ${PHP_PATH_ROOT}/php-fpm.d/zz-docker.conf
+COPY ${PATH_ROOT}/php_override.ini ${PHP_PATH_ROOT}/php/conf.d/override.ini
 COPY ${PATH_ROOT}/entrypoint_php.sh /usr/local/bin/entrypoint.sh
 
 # System
 RUN cd ~ \
 && chmod +x /usr/local/bin/entrypoint.sh \
-&& cp ${PHP7_PATH_ROOT}/php/php.ini-production ${PHP7_PATH_ROOT}/php/php.ini \
+&& cp ${PHP_PATH_ROOT}/php/php.ini-production ${PHP_PATH_ROOT}/php/php.ini \
 && apt-get update && apt-get install -y \
 software-properties-common \
 apt-transport-https \
@@ -69,7 +69,7 @@ zlib1g-dev \
 && chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root \
 # Extension
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
-&& pear config-set php_ini ${PHP7_PATH_ROOT}/php/php.ini \
+&& pear config-set php_ini ${PHP_PATH_ROOT}/php/php.ini \
 && pear config-set php_bin /usr/local/bin \
 && echo "\n" | pecl install apcu-5.1.18 \
 && echo "\n" | pecl install xdebug-2.9.6 \
@@ -89,4 +89,4 @@ zlib1g-dev \
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-EXPOSE ${PHP7_PORT_FPM} ${PHP7_PORT_XDEBUG}
+EXPOSE ${PHP_PORT_FPM} ${PHP_PORT_XDEBUG}
