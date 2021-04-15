@@ -22,6 +22,8 @@ pnpm-debug.log*
 # cimo +
 certificate/reinventsoftware.org
 core/Config.js
+key/*
+!key/.gitkeep
 virtual_host/reinventsoftware.org.conf
 virtual_host/ls1_reinventsoftware.org.conf
 virtual_host/stg_reinventsoftware.org.conf

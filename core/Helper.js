@@ -24,8 +24,21 @@ var httpAuth = HttpAuth.digest({
   file: "".concat(Config.data.digest.path, "/.digest_htpasswd")
 });
 var cryptAlgorithm = "aes-256-cbc";
-var cryptKey = Crypto.createHash("sha256").update(String(Config.data.crypt.key)).digest("base64").substr(0, 32);
-var cryptIv = Crypto.randomBytes(16);
+var cryptKey = Crypto.createHash("sha256").update(String(Config.data.encryption.secret)).digest("base64").substr(0, 32);
+
+var encryption = function encryption() {
+  if (Config.data.encryption.key) {
+    if (!Fs.existsSync(Config.data.encryption.key)) {
+      var cryptIv = Crypto.randomBytes(16);
+      Fs.writeFileSync(Config.data.encryption.key, cryptIv);
+    }
+
+    return Fs.readFileSync(Config.data.encryption.key);
+  }
+
+  return undefined;
+};
+
 var pathStatic = "".concat(Path.dirname(__dirname)).concat(Config.data.pathStatic);
 exports.pathStatic = pathStatic;
 
@@ -55,9 +68,13 @@ exports.digestCheck = digestCheck;
 
 var encrypt = function encrypt(text) {
   if (text !== "") {
-    var cipher = Crypto.createCipheriv(cryptAlgorithm, cryptKey, cryptIv);
-    var encrypted = Buffer.concat([cipher.update(text), cipher["final"]()]);
-    return cryptIv.toString("hex") + ":" + encrypted.toString("hex");
+    var cryptIv = encryption();
+
+    if (cryptIv) {
+      var cipher = Crypto.createCipheriv(cryptAlgorithm, cryptKey, cryptIv);
+      var encrypted = Buffer.concat([cipher.update(text), cipher["final"]()]);
+      return encrypted.toString("hex");
+    }
   }
 
   return "";
@@ -66,15 +83,13 @@ var encrypt = function encrypt(text) {
 exports.encrypt = encrypt;
 
 var decrypt = function decrypt(hex) {
-  var hexSplit = hex.split(":");
+  if (hex !== "") {
+    var cryptIv = encryption();
 
-  if (hexSplit.length == 2) {
-    try {
-      var decipher = Crypto.createDecipheriv(cryptAlgorithm, cryptKey, Buffer.from(hexSplit[0], "hex"));
-      var decrypted = Buffer.concat([decipher.update(Buffer.from(hexSplit[1], "hex")), decipher["final"]()]);
+    if (cryptIv) {
+      var decipher = Crypto.createDecipheriv(cryptAlgorithm, cryptKey, Buffer.from(cryptIv.toString(), "hex"));
+      var decrypted = Buffer.concat([decipher.update(Buffer.from(hex, "hex")), decipher["final"]()]);
       return decrypted.toString();
-    } catch (error) {
-      return "";
     }
   }
 

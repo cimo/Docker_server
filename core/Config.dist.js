@@ -28,8 +28,9 @@ var data = {
     path: "/home/".concat(process.env.WWW_USER_NAME, "/root").concat(process.env.WEB_PATH),
     active: process.env.NODEJS_DIGEST
   },
-  crypt: {
-    key: process.env.NODEJS_CRYPT_KEY
+  encryption: {
+    secret: process.env.NODEJS_ENCRYPTION_SECRET,
+    key: process.env.NODEJS_ENCRYPTION_KEY
   }
 };
 exports.data = data;
