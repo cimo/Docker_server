@@ -72,7 +72,7 @@ var encrypt = function encrypt(text) {
 
     if (cryptIv) {
       var cipher = Crypto.createCipheriv(cryptAlgorithm, cryptKey, cryptIv);
-      var encrypted = Buffer.concat([cipher.update(text), cipher["final"]()]);
+      var encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
       return encrypted.toString("hex");
     }
   }
@@ -87,8 +87,8 @@ var decrypt = function decrypt(hex) {
     var cryptIv = encryption();
 
     if (cryptIv) {
-      var decipher = Crypto.createDecipheriv(cryptAlgorithm, cryptKey, Buffer.from(cryptIv.toString(), "hex"));
-      var decrypted = Buffer.concat([decipher.update(Buffer.from(hex, "hex")), decipher["final"]()]);
+      var decipher = Crypto.createDecipheriv(cryptAlgorithm, cryptKey, Buffer.from(cryptIv));
+      var decrypted = Buffer.concat([decipher.update(Buffer.from(hex, "hex")), decipher.final()]);
       return decrypted.toString();
     }
   }

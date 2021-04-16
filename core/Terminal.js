@@ -186,8 +186,8 @@ var eventCrypt = function eventCrypt(socket) {
 };
 
 var socketEvent = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(socket, type) {
-    return _regenerator["default"].wrap(function _callee$(_context) {
+  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(socket, type) {
+    return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:

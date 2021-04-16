@@ -54,15 +54,15 @@ var corsOption = {
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
   optionsSuccessStatus: 200
 };
-var app = (0, _express["default"])();
-app.use(_express["default"]["static"](Helper.pathStatic));
+var app = (0, _express.default)();
+app.use(_express.default.static(Helper.pathStatic));
 app.use(BodyParser.urlencoded({
   extended: false
 }));
 app.use(BodyParser.json());
-app.use((0, _cookieParser["default"])());
-app.use((0, _cors["default"])(corsOption));
-app.use((0, _csurf["default"])({
+app.use((0, _cookieParser.default)());
+app.use((0, _cors.default)(corsOption));
+app.use((0, _csurf.default)({
   cookie: true
 }));
 app.get("/", Helper.digestCheck(function (request, result) {
