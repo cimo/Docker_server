@@ -12,8 +12,6 @@ var Http = _interopRequireWildcard(require("http"));
 
 var Https = _interopRequireWildcard(require("https"));
 
-var BodyParser = _interopRequireWildcard(require("body-parser"));
-
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -50,18 +48,22 @@ if (Config.data.port.range) {
 }
 
 var corsOption = {
-  origin: originList,
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  originList: originList,
+  methodList: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
   optionsSuccessStatus: 200
 };
 var app = (0, _express.default)();
 app.use(_express.default.static(Helper.pathStatic));
-app.use(BodyParser.urlencoded({
-  extended: false
+app.use(_express.default.urlencoded({
+  extended: true
 }));
-app.use(BodyParser.json());
+app.use(_express.default.json());
 app.use((0, _cookieParser.default)());
-app.use((0, _cors.default)(corsOption));
+app.use((0, _cors.default)({
+  origin: corsOption.originList,
+  methods: corsOption.methodList,
+  optionsSuccessStatus: corsOption.optionsSuccessStatus
+}));
 app.use((0, _csurf.default)({
   cookie: true
 }));
@@ -75,8 +77,8 @@ var serverHttps = Https.createServer({
 }, app);
 var socketIoServerHttp = new SocketIo.Server(serverHttp, {
   cors: {
-    origin: corsOption.origin,
-    methods: corsOption.methods
+    origin: corsOption.originList,
+    methods: corsOption.methodList
   },
   transports: ["websocket"],
   pingTimeout: 60000,
@@ -85,8 +87,8 @@ var socketIoServerHttp = new SocketIo.Server(serverHttp, {
 });
 var socketIoServerHttps = new SocketIo.Server(serverHttps, {
   cors: {
-    origin: corsOption.origin,
-    methods: corsOption.methods
+    origin: corsOption.originList,
+    methods: corsOption.methodList
   },
   transports: ["websocket"],
   pingTimeout: 60000,

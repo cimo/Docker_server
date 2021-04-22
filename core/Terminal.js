@@ -36,34 +36,33 @@ var eventPty = function eventPty(socket) {
       Helper.writeLog("Terminal ".concat(dataStart.tag, " start"));
       var shell = Os.platform() === "win32" ? "powershell.exe" : "bash";
 
-      if (dataStart.size) {
+      if (dataStart.sizeList) {
         ptySpawnList[dataStart.tag] = Pty.spawn(shell, [], {
           name: "xterm-color",
-          cols: dataStart.size[0],
-          rows: dataStart.size[1],
+          cols: dataStart.sizeList[0],
+          rows: dataStart.sizeList[1],
           cwd: Config.data.cwd,
           env: Config.data.env
         });
-      }
-
-      ptySpawnList[dataStart.tag].on("data", function (data) {
-        Helper.writeLog("Terminal t_pty_o_".concat(dataStart.tag, " => ").concat(data));
-        socket.emit("t_pty_o_".concat(dataStart.tag), {
-          tag: dataStart.tag,
-          cmd: data
-        });
-      });
-      ptySpawnList[dataStart.tag].on("exit", function () {
-        if (dataStart.tag && ptySpawnList[dataStart.tag]) {
-          Helper.writeLog("Terminal t_pty_o_".concat(dataStart.tag, " => xterm_reset"));
+        ptySpawnList[dataStart.tag].on("data", function (data) {
+          Helper.writeLog("Terminal t_pty_o_".concat(dataStart.tag, " => ").concat(data));
           socket.emit("t_pty_o_".concat(dataStart.tag), {
             tag: dataStart.tag,
-            cmd: "xterm_reset"
+            cmd: data
           });
-          ptySpawnList[dataStart.tag].destroy();
-          delete ptySpawnList[dataStart.tag];
-        }
-      });
+        });
+        ptySpawnList[dataStart.tag].on("exit", function () {
+          if (dataStart.tag && ptySpawnList[dataStart.tag]) {
+            Helper.writeLog("Terminal t_pty_o_".concat(dataStart.tag, " => xterm_reset"));
+            socket.emit("t_pty_o_".concat(dataStart.tag), {
+              tag: dataStart.tag,
+              cmd: "xterm_reset"
+            });
+            ptySpawnList[dataStart.tag].destroy();
+            delete ptySpawnList[dataStart.tag];
+          }
+        });
+      }
     }
   });
   socket.on("t_pty_i", function (data) {
@@ -73,9 +72,9 @@ var eventPty = function eventPty(socket) {
     }
   });
   socket.on("t_pty_resize", function (data) {
-    if (data.tag && data.size && ptySpawnList[data.tag]) {
+    if (data.tag && data.sizeList && ptySpawnList[data.tag]) {
       Helper.writeLog("Terminal t_pty_resize => ".concat(data.tag));
-      ptySpawnList[data.tag].resize(data.size[0], data.size[1]);
+      ptySpawnList[data.tag].resize(data.sizeList[0], data.sizeList[1]);
     }
   });
   socket.on("t_pty_close", function (data) {
