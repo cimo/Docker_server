@@ -21,7 +21,7 @@ var _this = void 0;
 
 var httpAuth = HttpAuth.digest({
   realm: Config.data.digest.realm,
-  file: "".concat(Config.data.digest.path, "/.digest_htpasswd")
+  file: "".concat(Config.data.digest.path, ".digest_htpasswd")
 });
 var cryptAlgorithm = "aes-256-cbc";
 var cryptKey = Crypto.createHash("sha256").update(String(Config.data.encryption.secret)).digest("base64").substr(0, 32);
