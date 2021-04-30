@@ -11,8 +11,8 @@
     "scripts": {
         "test": "echo 'Error no test specified' && exit 1",
         "check": "eslint . --fix",
-        "execute": "tsc --noEmit && babel-node src/Server.ts --extensions '.ts,.tsx'",
-        "build": "tsc --noEmit && babel src -d dist --extensions '.ts,.tsx'"
+        "execute": "tsc --noEmit && babel-node src/Server.ts --extensions '.ts'",
+        "build": "tsc --noEmit && babel src -d dist --extensions '.ts'"
     },
     "dependencies": {
         "express": "4.17.1",
