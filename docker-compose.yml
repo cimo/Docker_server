@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
     nodejs_container:
         container_name: NodeJs_${NODEJS_VERSION}
@@ -6,6 +6,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_nodejs
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_PATH: ${WEB_PATH}
@@ -26,6 +28,8 @@ services:
                 NODEJS_PORT_HTTP: ${NODEJS_PORT_HTTP}
                 NODEJS_PORT_HTTPS: ${NODEJS_PORT_HTTPS}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_PATH: ${WEB_PATH}
@@ -65,6 +69,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_apache
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -87,6 +93,8 @@ services:
                 GITLAB_PORT_HTTP: ${GITLAB_PORT_HTTP}
                 GITLAB_PORT_HTTPS: ${GITLAB_PORT_HTTPS}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -127,6 +135,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_php
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -141,6 +151,8 @@ services:
                 PHP_HOST_XDEBUG: ${PHP_HOST_XDEBUG}
                 PHP_PORT_XDEBUG: ${PHP_PORT_XDEBUG}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -172,6 +184,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_mysql
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -184,6 +198,8 @@ services:
                 MYSQL_VERSION: ${MYSQL_VERSION}
                 MYSQL_PORT: ${MYSQL_PORT}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -213,6 +229,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_postgresql
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -224,6 +242,8 @@ services:
                 POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
                 POSTGRES_PORT: ${POSTGRES_PORT}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -252,6 +272,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_redis
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -262,6 +284,8 @@ services:
                 REDIS_PASSWORD: ${REDIS_PASSWORD}
                 REDIS_PORT: ${REDIS_PORT}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -289,6 +313,8 @@ services:
             context: ${PATH_ROOT}/docker
             dockerfile: Dockerfile_mongodb
             args:
+                PROXY_HTTP: ${PROXY_HTTP}
+                PROXY_HTTPS: ${PROXY_HTTPS}
                 WWW_USER_NAME: ${WWW_USER_NAME}
                 WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
                 WEB_USER_GROUP: ${WEB_USER_GROUP}
@@ -303,6 +329,8 @@ services:
                 MONGODB_PASSWORD: ${MONGODB_PASSWORD}
                 MONGODB_PORT: ${MONGODB_PORT}
         environment:
+            PROXY_HTTP: ${PROXY_HTTP}
+            PROXY_HTTPS: ${PROXY_HTTPS}
             WWW_USER_NAME: ${WWW_USER_NAME}
             WWW_USER_PASSWORD: ${WWW_USER_PASSWORD}
             WEB_USER_GROUP: ${WEB_USER_GROUP}

@@ -2,6 +2,8 @@ ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}
 
+ARG PROXY_HTTP
+ARG PROXY_HTTPS
 ARG WWW_USER_NAME
 ARG WWW_USER_PASSWORD
 ARG WEB_USER_GROUP
@@ -15,6 +17,8 @@ ARG PHP_KEY_XDEBUG
 ARG PHP_HOST_XDEBUG
 ARG PHP_PORT_XDEBUG
 
+ENV http_proxy=${PROXY_HTTP}
+ENV https_proxy=${PROXY_HTTPS}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes
 
@@ -66,20 +70,35 @@ zlib1g-dev \
 && echo "${WWW_USER_NAME}:${WWW_USER_PASSWORD}" | chpasswd \
 && chown root:root /home/${WWW_USER_NAME} \
 && mkdir /home/${WWW_USER_NAME}/root \
-&& chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root \
+&& chown ${WWW_USER_NAME}:${WEB_USER_GROUP} /home/${WWW_USER_NAME}/root
 # Extension
-&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
-&& pear config-set php_ini ${PHP_PATH_ROOT}/php/php.ini \
-&& pear config-set php_bin /usr/local/bin \
-&& echo "\n" | pecl install apcu-5.1.18 \
-&& echo "\n" | pecl install xdebug-2.9.6 \
-&& echo "\n" | pecl install imagick-3.4.4 \
-&& echo "\n" | pecl install memcached-3.1.5 \
-&& docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
-&& docker-php-ext-configure gmp \
-&& docker-php-ext-install gd intl opcache zip pdo pdo_mysql pdo_pgsql bcmath gmp \
+RUN if [ -n "${http_proxy}" ]; \
+    then \
+        ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+        && pear config-set http_proxy ${http_proxy} \
+        && pear config-set php_ini ${PHP_PATH_ROOT}/php/php.ini \
+        && pear config-set php_bin /usr/local/bin \
+        && echo "\n" | pecl install apcu-5.1.18 \
+        && echo "\n" | pecl install xdebug-2.9.6 \
+        && echo "\n" | pecl install imagick-3.4.4 \
+        && echo "\n" | pecl install memcached-3.1.5 \
+        && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
+        && docker-php-ext-configure gmp \
+        && docker-php-ext-install gd intl opcache zip pdo pdo_mysql pdo_pgsql bcmath gmp; \
+    else \
+        ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+        && pear config-set php_ini ${PHP_PATH_ROOT}/php/php.ini \
+        && pear config-set php_bin /usr/local/bin \
+        && echo "\n" | pecl install apcu-5.1.18 \
+        && echo "\n" | pecl install xdebug-2.9.6 \
+        && echo "\n" | pecl install imagick-3.4.4 \
+        && echo "\n" | pecl install memcached-3.1.5 \
+        && docker-php-ext-configure gd --with-freetype=/usr/include --with-jpeg=/usr/include \
+        && docker-php-ext-configure gmp \
+        && docker-php-ext-install gd intl opcache zip pdo pdo_mysql pdo_pgsql bcmath gmp; \
+fi
 # Composer
-&& curl -fsSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+RUN curl -fsSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 # Clean
 && pecl clear-cache \
 && rm -rf /var/lib/apt/lists/* \

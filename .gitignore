@@ -33,3 +33,4 @@ virtual_host/stg_reinventsoftware.org.conf
 error.log
 debug.log
 node_modules
+Note.txt
